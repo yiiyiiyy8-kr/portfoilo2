@@ -1,5 +1,6 @@
 import { Fragment } from 'react'
 import introImg from '../assets/intro-ivbag.png'
+import Aurora from './Aurora'
 import RippleImage from './RippleImage'
 import './Intro.css'
 
@@ -9,20 +10,11 @@ const SUB = '사용자의 마음을 살피는 UX/UI 디자이너'
 function Intro() {
   return (
     <section className="intro">
+      <Aurora className="intro__aurora" />
+
       <p className="intro__brand">Portfolio</p>
 
-      <div
-        className="intro__text"
-        onPointerMove={(e) => {
-          const r = e.currentTarget.getBoundingClientRect()
-          e.currentTarget.style.setProperty('--gx', `${((e.clientX - r.left) / r.width) * 100}%`)
-          e.currentTarget.style.setProperty('--gy', `${((e.clientY - r.top) / r.height) * 100}%`)
-        }}
-        onPointerLeave={(e) => {
-          e.currentTarget.style.removeProperty('--gx')
-          e.currentTarget.style.removeProperty('--gy')
-        }}
-      >
+      <div className="intro__text">
         <h1 className="intro__heading">
           {LINES.map((line, i) => (
             <span className={`intro__line intro__line--${i === 0 ? "lead" : "main"}`} key={line}>

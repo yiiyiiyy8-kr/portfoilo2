@@ -11,6 +11,7 @@ import toolVercel from '../assets/projects/tools/vercel.png'
 import toolVscode from '../assets/projects/tools/vscode.png'
 import toolClaude from '../assets/projects/tools/claude.png'
 import toolGithub from '../assets/projects/tools/github.png'
+import Aurora from './Aurora'
 import './Work.css'
 
 const tools = [
@@ -184,6 +185,7 @@ function SwingingBag({ project, onSelect }) {
 function Work({ onSelectProject }) {
   return (
     <div className="work">
+      <Aurora className="work__aurora" />
       <p className="work__brand">Project</p>
       {projects.map((project) => (
         <SwingingBag key={project.id} project={project} onSelect={onSelectProject} />
