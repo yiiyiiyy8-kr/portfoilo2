@@ -328,13 +328,18 @@ function FrameBackdrop({ extra, blur }) {
   )
 }
 
-function ToolFrame({ frame }) {
+function ToolFrame({ frame, catLeft }) {
   const [open, setOpen] = useState(frame.initialOpen ?? null)
 
   return (
     <div className="tool-frame">
       <div className="tool-frame__block" style={{ left: frame.blockLeft }}>
-        <span className="tool-frame__category">{frame.category}</span>
+        <span
+          className="tool-frame__category"
+          style={{ left: catLeft - frame.blockLeft }}
+        >
+          {frame.category}
+        </span>
 
         <ul className="tool-frame__list">
           {frame.tools.map((tool, i) => {
@@ -497,7 +502,11 @@ function ToolsShowcase() {
   }
 
   const scale = size.w && size.h ? Math.min(size.w / FRAME_W, size.h / FRAME_H) : 1
-  const extra = Math.max(0, (size.w / scale - FRAME_W) / 2) + 40
+  const edge = Math.max(0, (size.w / scale - FRAME_W) / 2)
+  const extra = edge + 40
+  // section title sits where the intro copy does: 12vw in (clamped), so it isn't glued to the edge
+  const catPx = Math.min(190, Math.max(48, size.w * 0.12)) - 10
+  const catLeft = -edge + catPx / scale
 
   return (
     <section className="tools" ref={sectionRef} aria-label="사용 도구">
@@ -533,7 +542,7 @@ function ToolsShowcase() {
               <span className="tools__handle">@jaeyoung</span>
               <div className="tools__stage" style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
                 <FrameBackdrop extra={extra} blur={frame.blur} />
-                <ToolFrame frame={frame} />
+                <ToolFrame frame={frame} catLeft={catLeft} />
               </div>
             </div>
           ))}
