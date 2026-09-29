@@ -1,9 +1,27 @@
 import { useEffect, useRef } from 'react'
 import bagSulshasoo from '../assets/desktop9/bag-sulshasoo.png'
 import bagZipmate from '../assets/desktop9/bag-zipmate.png'
-import sulshasooDetail from '../assets/projects/sulshasoo-detail.png'
-import zipmateDetail from '../assets/projects/zipmate-detail.png'
+import phoneMockup from '../assets/projects/sulshasoo-mockup.png'
+import toolFigma from '../assets/projects/tools/figma.png'
+import toolFramer from '../assets/projects/tools/framer.png'
+import toolReact from '../assets/projects/tools/react.png'
+import toolTypescript from '../assets/projects/tools/typescript.png'
+import toolVite from '../assets/projects/tools/vite.png'
+import toolVercel from '../assets/projects/tools/vercel.png'
+import toolVscode from '../assets/projects/tools/vscode.png'
+import toolClaude from '../assets/projects/tools/claude.png'
+import toolGithub from '../assets/projects/tools/github.png'
 import './Work.css'
+
+const footer = {
+  duration: '8.24 ~ 9.21',
+  tools: [
+    { label: 'Design', icons: [toolFigma, toolFramer] },
+    { label: 'Development', icons: [toolReact, toolTypescript, toolVite, toolVercel] },
+    { label: 'Ai', icons: [toolVscode, toolClaude] },
+    { label: 'Collaboration', icons: [toolGithub] },
+  ],
+}
 
 export const projects = [
   {
@@ -23,7 +41,17 @@ export const projects = [
         '전통과 현대가 공존하는 브랜드 경험을',
         '디지털 공간에서도 온전히 느낄 수 있도록 설화수 웹사이트를 리디자인했습니다.',
       ],
-      image: sulshasooDetail,
+      image: phoneMockup,
+      layout: {
+        textTop: 194,
+        textGap: 59,
+        textWidth: 638,
+        descSize: 14,
+        descSpacing: 0.7,
+        footerLeft: 108,
+        imageLeft: 918,
+      },
+      footer,
     },
   },
   {
@@ -40,12 +68,20 @@ export const projects = [
       description: [
         '나다운 공간을 만들고 싶어도,',
         '어디서부터 시작해야 할지 막막할 때가 있습니다.',
-        '집메이트는 취향을 발견하는 순간부터',
-        '공간을 하나씩 완성해 가는 과정까지 함께합니다.',
-        '셀프 인테리어가 조금 더 쉽고 즐거운 경험이 되도록',
-        '사용자의 눈높이에서 앱을 기획하고 디자인했습니다.',
+        '집메이트는 취향을 발견하는 순간부터공간을 하나씩 완성해 가는 과정까지 함께합니다.',
+        '셀프 인테리어가 조금 더 쉽고 즐거운 경험이 되도록사용자의 눈높이에서 앱을 기획하고 디자인했습니다.',
       ],
-      image: zipmateDetail,
+      image: phoneMockup,
+      footer,
+      layout: {
+        textTop: 183,
+        textGap: 75,
+        textWidth: 793,
+        descSize: 16,
+        descSpacing: 0.8,
+        footerLeft: 95,
+        imageLeft: 955,
+      },
     },
   },
 ]
@@ -151,6 +187,7 @@ function SwingingBag({ project, onSelect }) {
 function Work({ onSelectProject }) {
   return (
     <div className="work">
+      <p className="work__brand">Project</p>
       {projects.map((project) => (
         <SwingingBag key={project.id} project={project} onSelect={onSelectProject} />
       ))}

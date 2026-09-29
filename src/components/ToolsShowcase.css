@@ -1,188 +1,292 @@
 .tools {
-  overflow: hidden;
-}
-
-.tools__track {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-}
-
-.tool-panel {
-  flex: 0 0 100%;
-  scroll-snap-align: start;
-  min-height: 100vh;
-  background-color: #fff;
   position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #e7e7e5;
   font-family: 'NanumSquareNeo', var(--sans);
 }
 
-.tool-panel__bg {
-  position: absolute;
-  inset: 0;
+.tools__viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+}
+
+
+.tools__track {
+  opacity: var(--reveal, 1);
+  display: flex;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.tools__slot {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
   overflow: hidden;
 }
 
-.tool-panel__bg-img {
+/* fixed 1440 x 1024 frame, scaled to fit the window */
+.tools__stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1440px;
+  height: 1024px;
+}
+
+.tools__dots {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.tools__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.tools__dot.is-active {
+  width: 24px;
+  border-radius: 8px;
+  background: #000;
+}
+
+/* ---------- one Figma frame ---------- */
+.tool-frame {
+  position: relative;
+  width: 1440px;
+  height: 1024px;
+  color: #000;
+}
+
+.tool-frame img {
+  -webkit-user-drag: none;
+}
+
+/* background + rules, wider than the frame so they reach the window edges */
+.tool-frame__wide {
   position: absolute;
   top: 0;
-  height: 140%;
-  width: 58%;
-  object-fit: cover;
+  height: 1024px;
+  overflow: hidden;
+  background-color: #fff;
+  pointer-events: none;
+  /* texture and rules fade in from the flat gray of the bag screen above */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 260px);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 260px);
 }
 
-.tool-panel__bg-img--left {
+.tool-frame__bg {
+  position: absolute;
+  top: 0;
+  width: 1440px;
+  height: 1024px;
+}
+
+.tool-frame__bg-img {
+  position: absolute;
+  width: 808.7px;
+  height: 1430.5px;
+  max-width: none;
+}
+
+.tool-frame__blur {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(2.45px);
+  -webkit-backdrop-filter: blur(2.45px);
+}
+
+.tool-frame__rule {
+  position: absolute;
   left: 0;
-}
-
-.tool-panel__bg-img--right {
   right: 0;
-  transform: scaleX(-1);
-}
-
-.tool-panel__overlay {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  backdrop-filter: blur(2.5px);
-  background-color: rgba(255, 255, 255, 0.05);
-  display: flex;
-  flex-direction: column;
-  padding: 48px clamp(24px, 6vw, 95px);
-}
-
-.tool-panel__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.tool-panel__label {
-  font-weight: 800;
-  font-size: 20px;
-  color: #000;
-}
-
-.tool-panel__close {
-  width: 26px;
-  height: 26px;
-}
-
-.tool-panel__line {
-  width: 100%;
   height: 2px;
-  margin: 24px 0;
+  background: #000;
 }
 
-.tool-panel__body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 32px;
+.tool-frame__block {
+  position: absolute;
+  top: 350px;
+  width: 1328px;
 }
 
-.tool-panel__title {
+.tool-frame__category {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 10px;
   font-weight: 800;
-  font-size: clamp(48px, 8vw, 100px);
-  color: #000;
-  margin: 0;
+  font-size: 50px;
+  line-height: 1.5;
+  white-space: nowrap;
 }
 
-.tool-panel__list {
-  list-style: none;
+.tool-frame__list {
+  position: absolute;
+  left: 657px;
+  top: 0;
+  width: 671px;
   margin: 0;
   padding: 0;
-  position: relative;
+  list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 24px;
 }
 
-.tool-panel__item {
+.tool-frame__item {
   position: relative;
-  font-weight: 800;
-  font-size: clamp(32px, 6vw, 90px);
-  color: #000;
-  cursor: pointer;
-  transition: color 0.25s ease;
 }
 
-.tool-panel__item.is-hovered {
-  cursor: none;
-}
-
-.tool-panel__item-name {
-  position: relative;
+.tool-frame__name {
   display: inline-block;
+  margin: 0;
+  padding: 8px 10px;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: 800;
+  font-size: 72px;
+  line-height: 1.3;
+  color: #000;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
 }
 
-.tool-panel__item.is-hovered .tool-panel__item-name {
-  /* Fallback for browsers without SVG-filter support in backdrop-filter. */
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  text-shadow: 0 0 18px rgba(255, 255, 255, 0.6);
+.tool-frame__list:has(.is-open) .tool-frame__item:not(.is-open) .tool-frame__name {
+  opacity: 0.45;
 }
 
-@supports (backdrop-filter: url('#glass-refraction')) {
-  .tool-panel__item.is-hovered .tool-panel__item-name {
-    backdrop-filter: url('#glass-refraction') blur(1px);
-  }
+.tool-frame__list:has(.is-open) .tool-frame__item:not(.is-open) .tool-frame__name:hover {
+  opacity: 1;
 }
 
-/* Custom cursor: a translucent glass lens that follows the pointer,
-   refracting whatever tool label sits underneath it. */
-.tool-panel__cursor {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 132px;
-  height: 132px;
-  border-radius: 50%;
-  pointer-events: none;
-  background-size: cover;
-  backdrop-filter: blur(2px) saturate(160%) brightness(1.08);
-  -webkit-backdrop-filter: blur(2px) saturate(160%) brightness(1.08);
-  box-shadow:
-    inset 0 0 12px rgba(255, 255, 255, 0.6),
-    inset 0 -6px 10px rgba(0, 0, 0, 0.08),
-    0 4px 18px rgba(0, 0, 0, 0.12);
-  mix-blend-mode: normal;
-  z-index: 5;
+/* description unfolds under the clicked name */
+.tool-frame__reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
 }
 
-.tool-panel__description {
-  margin: 12px 0 0;
-  max-width: 420px;
+.tool-frame__item.is-open .tool-frame__reveal {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.tool-frame__description {
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
   font-weight: 400;
   font-size: 16px;
-  line-height: 1.6;
-  letter-spacing: 0.3px;
-  color: #000;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border-radius: 12px;
-  padding: 14px 18px;
-  animation: tool-desc-in 0.25s ease;
-  z-index: 4;
+  line-height: 1.5;
+  white-space: pre-wrap;
 }
 
-@keyframes tool-desc-in {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+.tool-frame__item.is-open .tool-frame__description {
+  padding-bottom: 3px;
+}
+
+.tools__viewport.is-dragging {
+  cursor: grabbing;
+}
+
+/* fluid-glass lens (trails the visible system cursor) */
+.fluid-lens {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 20;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  backdrop-filter: url(#fluid-glass) blur(0.6px);
+  -webkit-backdrop-filter: url(#fluid-glass) blur(0.6px);
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 38%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 55%, rgba(255, 255, 255, 0.28) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+    inset 0 -10px 18px rgba(0, 0, 0, 0.07),
+    inset 0 8px 14px rgba(255, 255, 255, 0.35),
+    0 12px 30px rgba(0, 0, 0, 0.14);
+  transition: opacity 0.25s ease;
+}
+
+.fluid-lens[data-on='1'] {
+  opacity: 1;
+}
+
+/* browsers without SVG backdrop filters: plain frosted lens */
+@supports not (backdrop-filter: url(#fluid-glass)) {
+  .fluid-lens {
+    backdrop-filter: blur(4px) saturate(140%);
+    -webkit-backdrop-filter: blur(4px) saturate(140%);
   }
 }
 
-.tool-panel__footer {
-  display: flex;
-  justify-content: space-between;
+/* slot-level chrome: same spot as the Portfolio / Project heading, footer at both bottom corners */
+.tools__brand,
+.tools__year,
+.tools__handle {
+  position: absolute;
+  z-index: 5;
+  margin: 0;
+  padding: 10px;
   font-weight: 800;
-  font-size: 15px;
+  line-height: 1.5;
   color: #000;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.tools__brand {
+  left: 32px;
+  top: 10px;
+  font-size: 40px;
+}
+
+.tools__year,
+.tools__handle {
+  bottom: 10px;
+  font-size: 15px;
+}
+
+.tools__year {
+  left: 32px;
+}
+
+.tools__handle {
+  right: 32px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tools__track {
+    transition-duration: 0.01s !important;
+  }
 }

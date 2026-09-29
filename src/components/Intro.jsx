@@ -9,6 +9,8 @@ const SUB = '사용자의 마음을 살피는 UX/UI 디자이너'
 function Intro() {
   return (
     <section className="intro">
+      <p className="intro__brand">Portfolio</p>
+
       <div className="intro__text">
         <h1 className="intro__heading">
           {LINES.map((line, i) => (

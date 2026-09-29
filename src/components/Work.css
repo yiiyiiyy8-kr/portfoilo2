@@ -7,11 +7,27 @@
   height: 100%;
   background-color: #e7e7e5;
   box-sizing: border-box;
+  position: relative;
+}
+
+.work__brand {
+  position: absolute;
+  left: 32px;
+  top: 10px;
+  margin: 0;
+  padding: 10px;
+  font-family: 'NanumSquareNeo', var(--sans);
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 1.5;
+  color: #000;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .work__bag {
   display: block;
-  padding: 10px;
+  padding: 0 10px 10px;
   border: none;
   background: none;
   cursor: pointer;
