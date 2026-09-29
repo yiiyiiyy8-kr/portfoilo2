@@ -117,6 +117,33 @@ function ProjectDetail({ project, onClose }) {
                 {line}
               </p>
             ))}
+            {project.link && (
+              <div
+                className="project-detail__link-row pd-rise"
+                style={d(0.72 + project.description.length * 0.07)}
+              >
+                {project.qr && (
+                  <a
+                    className="project-detail__qr"
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${project.name} 사이트 QR 코드`}
+                  >
+                    <img src={project.qr} alt="" />
+                  </a>
+                )}
+                <a
+                  className="project-detail__link"
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {project.link.replace(/^https?:\/\//, '')}
+                  <span aria-hidden="true"> ↗</span>
+                </a>
+              </div>
+            )}
           </div>
         </div>
 
