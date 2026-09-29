@@ -1,0 +1,48 @@
+.intro-reveal {
+  position: relative;
+  height: 180vh;
+}
+
+.intro-reveal__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.intro-reveal__layer {
+  position: absolute;
+  inset: 0;
+}
+
+.intro-reveal__layer--work {
+  z-index: 1;
+  overflow-y: auto;
+}
+
+.intro-reveal__layer--intro {
+  z-index: 2;
+  will-change: opacity, transform, filter;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-reveal {
+    height: auto;
+  }
+
+  .intro-reveal__stage {
+    position: relative;
+    height: auto;
+    overflow: visible;
+  }
+
+  .intro-reveal__layer {
+    position: relative;
+  }
+
+  .intro-reveal__layer--intro {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

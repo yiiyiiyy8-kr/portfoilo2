@@ -1,0 +1,37 @@
+.site-footer {
+  position: relative;
+  background-color: #e7e7e5;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 40px 24px;
+}
+
+.site-footer__image {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(52vw, 759px);
+  height: auto;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.site-footer__wordmark {
+  position: relative;
+  margin: 0;
+  /* Figma spec calls for 'YJ Obang' (a display serif); no verified free CDN
+     source was found, so we fall back to our existing ExtraBold with wide
+     tracking to approximate the bold, spaced-out wordmark look. */
+  font-family: 'NanumSquareNeo', var(--sans);
+  font-weight: 800;
+  font-size: clamp(20px, 9vw, 150px);
+  letter-spacing: 0.04em;
+  color: #000;
+  text-align: center;
+  white-space: nowrap;
+  max-width: 100%;
+}

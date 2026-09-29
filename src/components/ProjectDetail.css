@@ -1,0 +1,136 @@
+.project-detail {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: #141620;
+  color: #fff;
+  font-family: 'NanumSquareNeo', var(--sans);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 48px clamp(24px, 6vw, 95px) 32px;
+}
+
+.project-detail__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.project-detail__eyebrow {
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.project-detail__close {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 26px;
+  height: 26px;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+.project-detail__close:hover {
+  opacity: 1;
+}
+
+.project-detail__close img {
+  width: 100%;
+  height: 100%;
+}
+
+.project-detail__body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  flex-wrap: wrap;
+  padding: 64px 0;
+}
+
+.project-detail__text {
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.project-detail__title {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(32px, 4.5vw, 50px);
+  line-height: 1.5;
+}
+
+.project-detail__subtitle {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(24px, 3.5vw, 40px);
+  line-height: 1.4;
+}
+
+.project-detail__meta {
+  margin: 8px 0 0;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.project-detail__description {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.9;
+  letter-spacing: 0.7px;
+}
+
+.project-detail__description p {
+  margin: 0;
+}
+
+.project-detail__image {
+  flex: 1 1 400px;
+  max-width: 613px;
+  display: flex;
+  justify-content: center;
+}
+
+.project-detail__image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.project-detail__footer {
+  display: flex;
+  gap: 64px;
+  flex-shrink: 0;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 1px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .project-detail__body {
+    flex-direction: column-reverse;
+    padding: 32px 0;
+    text-align: center;
+  }
+
+  .project-detail__text {
+    align-items: center;
+  }
+
+  .project-detail__footer {
+    justify-content: center;
+    gap: 32px;
+  }
+}

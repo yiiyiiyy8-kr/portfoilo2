@@ -1,0 +1,29 @@
+.scroll-cue {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  min-height: 40vh;
+  background-color: #e7e7e5;
+  padding: 0 clamp(24px, 8vw, 111px) 48px 0;
+}
+
+.scroll-cue__button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.scroll-cue__button:hover {
+  opacity: 1;
+}
+
+.scroll-cue__button img {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}

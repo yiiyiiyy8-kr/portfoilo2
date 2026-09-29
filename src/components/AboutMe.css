@@ -1,0 +1,81 @@
+.aboutme {
+  position: relative;
+  overflow: hidden;
+  background-color: #e7e7e5;
+  padding: 80px clamp(24px, 6vw, 79px);
+  font-family: 'NanumSquareNeo', var(--sans);
+}
+
+.aboutme__deco {
+  position: absolute;
+  height: auto;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* Large, unblurred piece — matches node 93:340 (rotate 110.99deg, no blur). */
+.aboutme__deco--1 {
+  top: 32%;
+  right: 22%;
+  width: 260px;
+  transform: rotate(110.99deg);
+}
+
+/* Small blurred piece — matches node 93:341 (rotate -90deg, blur 2.55px). */
+.aboutme__deco--2 {
+  top: 58%;
+  right: 14%;
+  width: 110px;
+  transform: rotate(-90deg);
+  filter: blur(2.55px);
+  opacity: 0.5;
+}
+
+/* Medium blurred piece — matches node 93:339 (rotate -75deg, blur 6.1px). */
+.aboutme__deco--3 {
+  top: 68%;
+  right: 4%;
+  width: 150px;
+  transform: rotate(-75deg);
+  filter: blur(6.1px);
+  opacity: 0.5;
+}
+
+.aboutme__content {
+  position: relative;
+  max-width: 760px;
+}
+
+.aboutme__heading {
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 40px);
+  color: #000;
+  margin: 0 0 32px;
+}
+
+.aboutme__subheading {
+  font-weight: 800;
+  font-size: clamp(24px, 3.5vw, 40px);
+  color: #000;
+  margin: 0 0 24px;
+}
+
+.aboutme__text {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+}
+
+.aboutme__text p {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .aboutme__deco {
+    display: none;
+  }
+}
