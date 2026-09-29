@@ -9,6 +9,7 @@ import './IntroReveal.css'
 // appearing only after Intro has fully scrolled away.
 function IntroReveal({ onSelectProject }) {
   const wrapperRef = useRef(null)
+  // 0 = intro fully shown, 1 = intro fully gone (done well before the end of the pin)
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
@@ -25,7 +26,11 @@ function IntroReveal({ onSelectProject }) {
 
       // Intro dissolves out to reveal the project bags behind it
       const scrolled = Math.min(Math.max(-top, 0), range)
-      setProgress(scrolled / range)
+      // the intro is completely gone after the first ~16% of the pin (about 70px),
+      // dropping fastest at the start, so no ghost of it lingers behind Project
+      const fadeEnd = 0.16
+      const t = Math.min(scrolled / (range * fadeEnd), 1)
+      setProgress(1 - (1 - t) * (1 - t))
     }
 
     const onScroll = () => {
@@ -55,6 +60,7 @@ function IntroReveal({ onSelectProject }) {
           className="intro-reveal__layer intro-reveal__layer--intro"
           style={{
             opacity: 1 - progress,
+            visibility: progress >= 1 ? 'hidden' : 'visible',
             pointerEvents: progress > 0.5 ? 'none' : 'auto',
           }}
         >

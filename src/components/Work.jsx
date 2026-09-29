@@ -13,15 +13,12 @@ import toolClaude from '../assets/projects/tools/claude.png'
 import toolGithub from '../assets/projects/tools/github.png'
 import './Work.css'
 
-const footer = {
-  duration: '8.24 ~ 9.21',
-  tools: [
-    { label: 'Design', icons: [toolFigma, toolFramer] },
-    { label: 'Development', icons: [toolReact, toolTypescript, toolVite, toolVercel] },
-    { label: 'Ai', icons: [toolVscode, toolClaude] },
-    { label: 'Collaboration', icons: [toolGithub] },
-  ],
-}
+const tools = [
+  { label: 'Design', icons: [toolFigma, toolFramer] },
+  { label: 'Development', icons: [toolReact, toolTypescript, toolVite, toolVercel] },
+  { label: 'Ai', icons: [toolVscode, toolClaude] },
+  { label: 'Collaboration', icons: [toolGithub] },
+]
 
 export const projects = [
   {
@@ -51,7 +48,7 @@ export const projects = [
         footerLeft: 108,
         imageLeft: 918,
       },
-      footer,
+      footer: { duration: '5.22 - 8.11', tools },
     },
   },
   {
@@ -72,7 +69,7 @@ export const projects = [
         '셀프 인테리어가 조금 더 쉽고 즐거운 경험이 되도록사용자의 눈높이에서 앱을 기획하고 디자인했습니다.',
       ],
       image: phoneMockup,
-      footer,
+      footer: { duration: '8.24 - 9.21', tools },
       layout: {
         textTop: 183,
         textGap: 75,

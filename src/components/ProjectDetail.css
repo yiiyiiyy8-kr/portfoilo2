@@ -280,3 +280,87 @@
     flex-wrap: wrap;
   }
 }
+
+/* ---------- open / close motion ---------- */
+.project-detail {
+  animation: pd-open 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.project-detail.is-closing {
+  animation: pd-close 0.42s cubic-bezier(0.55, 0, 0.55, 0.2) forwards;
+  pointer-events: none;
+}
+
+@keyframes pd-open {
+  from { clip-path: inset(100% 0 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes pd-close {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.03); }
+}
+
+/* text and details rise one after another */
+.pd-rise {
+  animation: pd-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes pd-rise {
+  from { opacity: 0; transform: translate3d(0, 34px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* the phone slides up from below with a small settle */
+.pd-phone {
+  animation: pd-phone 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes pd-phone {
+  from { opacity: 0; transform: translate3d(0, 120px, 0) rotate(3deg) scale(0.94); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) rotate(0) scale(1); }
+}
+
+.pd-pop {
+  animation: pd-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes pd-pop {
+  from { opacity: 0; transform: scale(0.3); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* after arriving, the phone floats and leans toward the pointer */
+.project-detail__float {
+  animation: pd-float 6s ease-in-out 1.6s infinite;
+}
+
+.project-detail__float img {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.35s ease-out;
+  will-change: transform;
+}
+
+@keyframes pd-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -10px, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-detail,
+  .pd-rise,
+  .pd-phone,
+  .pd-pop,
+  .project-detail__float {
+    animation: none;
+  }
+  .project-detail.is-closing {
+    opacity: 0;
+  }
+  .project-detail__float img {
+    transform: none;
+  }
+}

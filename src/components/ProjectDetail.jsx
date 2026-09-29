@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import closeIcon from '../assets/desktop9/x-icon.svg'
 import './ProjectDetail.css'
 
@@ -6,6 +6,7 @@ import './ProjectDetail.css'
 // window, so spacing between text, footer and phone never changes.
 const FRAME_W = 1440
 const FRAME_H = 1024
+const CLOSE_MS = 420
 
 const DEFAULT_FOOTER = { duration: null, tools: [] }
 
@@ -14,10 +15,20 @@ const fitScale = () =>
 
 function ProjectDetail({ project, onClose }) {
   const [scale, setScale] = useState(fitScale)
+  const [closing, setClosing] = useState(false)
+  const phoneRef = useRef(null)
+  const closeTimer = useRef(0)
+
+  // play the exit animation, then hand control back to the parent
+  const requestClose = useCallback(() => {
+    if (closeTimer.current) return
+    setClosing(true)
+    closeTimer.current = window.setTimeout(onClose, CLOSE_MS)
+  }, [onClose])
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') requestClose()
     }
     const handleResize = () => setScale(fitScale())
     document.addEventListener('keydown', handleKeyDown)
@@ -28,7 +39,19 @@ function ProjectDetail({ project, onClose }) {
       window.removeEventListener('resize', handleResize)
       document.body.style.overflow = ''
     }
-  }, [onClose])
+  }, [requestClose])
+
+  useEffect(() => () => window.clearTimeout(closeTimer.current), [])
+
+  // the phone leans gently toward the pointer
+  const handlePointerMove = (e) => {
+    const el = phoneRef.current
+    if (!el) return
+    const x = e.clientX / window.innerWidth - 0.5
+    const y = e.clientY / window.innerHeight - 0.5
+    el.style.setProperty('--ry', `${x * 14}deg`)
+    el.style.setProperty('--rx', `${-y * 10}deg`)
+  }
 
   if (!project) return null
 
@@ -45,15 +68,27 @@ function ProjectDetail({ project, onClose }) {
     stageStyle['--image-left'] = `${layout.imageLeft}px`
   }
 
+  // each piece rises in after the last: `--d` is its delay in seconds
+  const d = (n) => ({ '--d': `${n}s` })
+
   return (
-    <div className="project-detail" role="dialog" aria-modal="true" aria-label={project.name}>
+    <div
+      className={`project-detail${closing ? ' is-closing' : ''}`}
+      role="dialog"
+      aria-modal="true"
+      aria-label={project.name}
+      onPointerMove={handlePointerMove}
+    >
       <div className="project-detail__stage" style={stageStyle}>
-        <span className="project-detail__eyebrow">{project.eyebrow}</span>
+        <span className="project-detail__eyebrow pd-rise" style={d(0.3)}>
+          {project.eyebrow}
+        </span>
 
         <button
           type="button"
-          className="project-detail__close"
-          onClick={onClose}
+          className="project-detail__close pd-rise"
+          style={d(0.35)}
+          onClick={requestClose}
           aria-label="닫기"
         >
           <img src={closeIcon} alt="" />
@@ -61,9 +96,13 @@ function ProjectDetail({ project, onClose }) {
 
         <div className="project-detail__text">
           <div className="project-detail__head">
-            <h2 className="project-detail__title">[{project.name}]</h2>
-            <h3 className="project-detail__subtitle">{project.subtitle}</h3>
-            <p className="project-detail__meta">
+            <h2 className="project-detail__title pd-rise" style={d(0.4)}>
+              [{project.name}]
+            </h2>
+            <h3 className="project-detail__subtitle pd-rise" style={d(0.5)}>
+              {project.subtitle}
+            </h3>
+            <p className="project-detail__meta pd-rise" style={d(0.6)}>
               {project.meta.map((item, i) => (
                 <span className="project-detail__meta-group" key={item}>
                   {i > 0 && <span className="project-detail__meta-sep">|</span>}
@@ -73,24 +112,32 @@ function ProjectDetail({ project, onClose }) {
             </p>
           </div>
           <div className="project-detail__description">
-            {project.description.map((line) => (
-              <p key={line}>{line}</p>
+            {project.description.map((line, i) => (
+              <p key={line} className="pd-rise" style={d(0.72 + i * 0.07)}>
+                {line}
+              </p>
             ))}
           </div>
         </div>
 
-        <div className="project-detail__image">
-          <img src={project.image} alt={`${project.name} 프로젝트 이미지`} />
+        <div className="project-detail__image pd-phone" style={d(0.45)}>
+          <div className="project-detail__float">
+            <img
+              ref={phoneRef}
+              src={project.image}
+              alt={`${project.name} 프로젝트 이미지`}
+            />
+          </div>
         </div>
 
         <div className="project-detail__footer">
-          <div className="project-detail__duration">
+          <div className="project-detail__duration pd-rise" style={d(0.95)}>
             <span className="project-detail__col-title">Project Duration</span>
             {footer.duration && (
               <span className="project-detail__duration-value">{footer.duration}</span>
             )}
           </div>
-          <div className="project-detail__tools">
+          <div className="project-detail__tools pd-rise" style={d(1.02)}>
             <span className="project-detail__col-title">Tools</span>
             <div className="project-detail__tool-groups">
               {footer.tools.map((group) => (
@@ -98,7 +145,13 @@ function ProjectDetail({ project, onClose }) {
                   <span className="project-detail__tool-label">{group.label}</span>
                   <div className="project-detail__tool-icons">
                     {group.icons.map((src, i) => (
-                      <img src={src} alt="" key={i} />
+                      <img
+                        src={src}
+                        alt=""
+                        key={i}
+                        className="pd-pop"
+                        style={d(1.15 + i * 0.05)}
+                      />
                     ))}
                   </div>
                 </div>

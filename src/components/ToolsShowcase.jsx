@@ -82,6 +82,69 @@ const frames = [
           '이를 통해 기획 내용을 구체화하고 디자인 구현 과정의 문제를 효율적으로 해결할 수 있습니다.',
         ],
       },
+      {
+        name: 'ChatGPT',
+        description: [
+          'ChatGPT를 활용해 아이디어 정리, 콘텐츠 구성, 코드 작성 과정을 경험했습니다.',
+          '이를 통해 기획을 구체화하고 구현 과정에서 발생하는 문제를 효율적으로 해결할 수 있습니다.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'development',
+    category: 'DEVELOPMENT',
+    blockLeft: 56,
+    tools: [
+      {
+        name: 'React',
+        description: [
+          'React의 컴포넌트 기반 구조와 상태 관리 방법을 익혔습니다.',
+          '이를 활용해 반복되는 UI를 효율적으로 구성하고 인터랙티브한 웹 화면을 구현할 수 있습니다.',
+        ],
+      },
+      {
+        name: 'TypeScript',
+        description: [
+          'TypeScript의 타입 지정과 인터페이스 활용 방법을 익혔습니다.',
+          '이를 활용해 오류를 줄이고 구조가 명확한 웹 프로젝트를 제작할 수 있습니다.',
+        ],
+      },
+      {
+        name: 'Vite',
+        description: [
+          'Vite를 활용한 프로젝트 생성과 개발 환경 설정 방법을 익혔습니다.',
+          '이를 통해 빠른 환경에서 웹사이트를 제작하고 결과를 실시간으로 확인할 수 있습니다.',
+        ],
+      },
+      {
+        name: 'Visual Studio Code',
+        description: [
+          'Visual Studio Code의 코드 편집과 확장 기능 활용 방법을 익혔습니다.',
+          '이를 활용해 디자인을 HTML, CSS, JavaScript 기반의 웹 화면으로 구현할 수 있습니다.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'deployment',
+    category: 'DEPLOYMENT &\nCOLLABORATION',
+    blockLeft: 56,
+    tools: [
+      {
+        name: 'Vercel',
+        description: [
+          'Vercel을 활용한 웹 프로젝트 배포와 업데이트 과정을 경험했습니다.',
+          '이를 통해 완성된 웹사이트를 온라인에 공개하고 변경 사항을 지속적으로 반영할 수 있습니다.',
+        ],
+      },
+      {
+        name: 'GitHub',
+        description: [
+          'GitHub의 저장소, 커밋, 브랜치 관리 방법을 익혔습니다.',
+          '이를 활용해 작업 기록을 체계적으로 관리하고 프로젝트를 공유할 수 있습니다.',
+        ],
+      },
     ],
   },
 ]
@@ -454,7 +517,18 @@ function ToolsShowcase() {
         <div className="tools__track" ref={trackRef}>
           {frames.map((frame) => (
             <div className="tools__slot" key={frame.id}>
-              <span className="tools__brand">Tools</span>
+              <span className="tools__brand" aria-label="Tools">
+                {[...'Tools'].map((ch, i) => (
+                  <span
+                    className="tools__brand-char"
+                    aria-hidden="true"
+                    key={i}
+                    style={{ '--i': i }}
+                  >
+                    {ch}
+                  </span>
+                ))}
+              </span>
               <span className="tools__year">2026</span>
               <span className="tools__handle">@jaeyoung</span>
               <div className="tools__stage" style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>

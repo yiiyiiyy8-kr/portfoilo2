@@ -11,10 +11,21 @@ function Intro() {
     <section className="intro">
       <p className="intro__brand">Portfolio</p>
 
-      <div className="intro__text">
+      <div
+        className="intro__text"
+        onPointerMove={(e) => {
+          const r = e.currentTarget.getBoundingClientRect()
+          e.currentTarget.style.setProperty('--gx', `${((e.clientX - r.left) / r.width) * 100}%`)
+          e.currentTarget.style.setProperty('--gy', `${((e.clientY - r.top) / r.height) * 100}%`)
+        }}
+        onPointerLeave={(e) => {
+          e.currentTarget.style.removeProperty('--gx')
+          e.currentTarget.style.removeProperty('--gy')
+        }}
+      >
         <h1 className="intro__heading">
           {LINES.map((line, i) => (
-            <span className="intro__line" key={line}>
+            <span className={`intro__line intro__line--${i === 0 ? "lead" : "main"}`} key={line}>
               <span className="intro__line-inner" style={{ '--d': `${i * 0.18}s` }}>
                 {line}
               </span>

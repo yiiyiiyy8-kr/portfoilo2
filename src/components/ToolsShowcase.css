@@ -139,7 +139,7 @@
   font-weight: 800;
   font-size: 50px;
   line-height: 1.5;
-  white-space: nowrap;
+  white-space: pre;
 }
 
 .tool-frame__list {
@@ -269,6 +269,17 @@
   left: 32px;
   top: 10px;
   font-size: 40px;
+  display: flex;
+  overflow: hidden;
+}
+
+/* letters rise out of a mask one after another, driven by the scroll-in progress */
+.tools__brand-char {
+  --p: clamp(0, calc(var(--reveal, 1) * 2 - var(--i) * 0.2), 1);
+  display: inline-block;
+  transform: translateY(calc((1 - var(--p)) * 115%)) rotate(calc((1 - var(--p)) * 8deg));
+  transform-origin: 0 100%;
+  opacity: var(--p);
 }
 
 .tools__year,
