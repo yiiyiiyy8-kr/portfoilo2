@@ -112,6 +112,8 @@
 .tool-frame__blur {
   position: absolute;
   inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(2.45px);
   -webkit-backdrop-filter: blur(2.45px);
@@ -300,4 +302,22 @@
   .tools__track {
     transition-duration: 0.01s !important;
   }
+}
+
+.tool-frame__blur.is-on {
+  opacity: 1;
+}
+
+/* background + fixed text never move while the frames slide */
+.tools__fixed {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: var(--reveal, 1);
+  pointer-events: none;
+}
+
+.tools__track {
+  position: relative;
+  z-index: 1;
 }

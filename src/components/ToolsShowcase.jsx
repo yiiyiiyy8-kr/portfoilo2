@@ -320,7 +320,7 @@ function FrameBackdrop({ extra, blur }) {
           )
         })}
       </div>
-      {blur && <div className="tool-frame__blur" />}
+      <div className={`tool-frame__blur${blur ? ' is-on' : ''}`} />
       {RULES.map((top) => (
         <span key={top} className="tool-frame__rule" style={{ top: top + 8 }} />
       ))}
@@ -450,7 +450,11 @@ function ToolsShowcase() {
     if (!d.moved && Math.abs(dx) < 4) return
     if (!d.moved) {
       // only capture once it's a real drag, so plain clicks still reach the tool names
-      viewportRef.current.setPointerCapture(d.pointerId)
+      try {
+        viewportRef.current.setPointerCapture(d.pointerId)
+      } catch {
+        // pointer already released; the drag still works without capture
+      }
       setDragging(true)
     }
     d.moved = true
@@ -523,25 +527,32 @@ function ToolsShowcase() {
           if (drag.current.suppressClick) e.stopPropagation()
         }}
       >
+        {/* fixed layer: background, rules and the Tools / 2026 / @jaeyoung text stay put */}
+        <div className="tools__fixed" aria-hidden="false">
+          <div className="tools__stage" style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
+            <FrameBackdrop extra={extra} blur={frames[index].blur} />
+          </div>
+          <span className="tools__brand" aria-label="Tools">
+            {[...'Tools'].map((ch, i) => (
+              <span
+                className="tools__brand-char"
+                aria-hidden="true"
+                key={i}
+                style={{ '--i': i }}
+              >
+                {ch}
+              </span>
+            ))}
+          </span>
+          <span className="tools__year">2026</span>
+          <span className="tools__handle">@jaeyoung</span>
+        </div>
+
+        {/* only the frame content slides */}
         <div className="tools__track" ref={trackRef}>
           {frames.map((frame) => (
             <div className="tools__slot" key={frame.id}>
-              <span className="tools__brand" aria-label="Tools">
-                {[...'Tools'].map((ch, i) => (
-                  <span
-                    className="tools__brand-char"
-                    aria-hidden="true"
-                    key={i}
-                    style={{ '--i': i }}
-                  >
-                    {ch}
-                  </span>
-                ))}
-              </span>
-              <span className="tools__year">2026</span>
-              <span className="tools__handle">@jaeyoung</span>
               <div className="tools__stage" style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
-                <FrameBackdrop extra={extra} blur={frame.blur} />
                 <ToolFrame frame={frame} catLeft={catLeft} />
               </div>
             </div>

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import bagSulshasoo from '../assets/desktop9/bag-sulshasoo.png'
 import bagZipmate from '../assets/desktop9/bag-zipmate.png'
 import sulshasooQr from '../assets/projects/sulshasoo-qr.png'
+import zipmateQr from '../assets/projects/zipmate-qr.png'
 import phoneMockup from '../assets/projects/sulshasoo-mockup.png'
 import toolFigma from '../assets/projects/tools/figma.png'
 import toolFramer from '../assets/projects/tools/framer.png'
@@ -74,6 +75,8 @@ export const projects = [
       ],
       image: phoneMockup,
       footer: { duration: '8.24 - 9.21', tools },
+      link: 'https://zipmate-blond.vercel.app/',
+      qr: zipmateQr,
       layout: {
         textTop: 183,
         textGap: 75,
