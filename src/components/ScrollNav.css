@@ -1,0 +1,111 @@
+.scroll-nav {
+  position: fixed;
+  right: clamp(24px, 8vw, 125px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+.scroll-nav-label {
+  font-weight: 700;
+  font-size: 10px;
+  color: #525252;
+  white-space: nowrap;
+}
+
+.scroll-nav-indicator {
+  width: 35px;
+  height: 53px;
+  border: 2px solid #000;
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+.scroll-nav-dot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 20px;
+  width: 3px;
+  height: 8px;
+  border-radius: 20px;
+  background-color: #aeb1b8;
+}
+
+.scroll-nav {
+  cursor: pointer;
+}
+
+.scroll-nav-label {
+  animation: scroll-nav-pulse 1.6s ease-in-out infinite;
+}
+
+.scroll-nav-indicator {
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.scroll-nav:hover .scroll-nav-indicator {
+  transform: scale(1.08);
+  background-color: #000;
+}
+
+.scroll-nav:hover .scroll-nav-dot {
+  background-color: #fff;
+}
+
+.scroll-nav-chevrons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -6px;
+}
+
+.scroll-nav-chevrons i {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #525252;
+  border-bottom: 2px solid #525252;
+  transform: rotate(45deg);
+  margin-top: -3px;
+  opacity: 0;
+  animation: scroll-nav-chevron 1.6s ease-in-out infinite;
+}
+
+.scroll-nav-chevrons i:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+@keyframes scroll-nav-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes scroll-nav-chevron {
+  0%   { opacity: 0; transform: translateY(-4px) rotate(45deg); }
+  50%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(6px) rotate(45deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-nav-label,
+  .scroll-nav-chevrons i {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .scroll-nav {
+    top: auto;
+    bottom: 24px;
+    right: 24px;
+    transform: none;
+    flex-direction: row;
+  }
+}

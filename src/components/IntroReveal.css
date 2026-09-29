@@ -17,7 +17,7 @@
 
 .intro-reveal__layer--work {
   z-index: 1;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .intro-reveal__layer--intro {

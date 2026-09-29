@@ -20,11 +20,12 @@ function IntroReveal({ onSelectProject }) {
       if (!wrapper) return
 
       const { top, height } = wrapper.getBoundingClientRect()
-      const fadeRange = height - window.innerHeight
-      if (fadeRange <= 0) return
+      const range = height - window.innerHeight
+      if (range <= 0) return
 
-      const scrolled = Math.min(Math.max(-top, 0), fadeRange)
-      setProgress(scrolled / fadeRange)
+      // Intro dissolves out to reveal the project bags behind it
+      const scrolled = Math.min(Math.max(-top, 0), range)
+      setProgress(scrolled / range)
     }
 
     const onScroll = () => {
@@ -54,9 +55,7 @@ function IntroReveal({ onSelectProject }) {
           className="intro-reveal__layer intro-reveal__layer--intro"
           style={{
             opacity: 1 - progress,
-            transform: `scale(${1 - progress * 0.04}) translateY(${progress * -24}px)`,
-            filter: `blur(${progress * 6}px)`,
-            pointerEvents: progress > 0.85 ? 'none' : 'auto',
+            pointerEvents: progress > 0.5 ? 'none' : 'auto',
           }}
         >
           <Intro />

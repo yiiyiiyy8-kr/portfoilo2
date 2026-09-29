@@ -1,98 +1,44 @@
 .work {
-  background-color: #e7e7e5;
-  padding: 100px 0;
-  overflow: hidden;
-  font-family: 'NanumSquareNeo', var(--sans);
-}
-
-.work__text {
-  padding: 0 clamp(24px, 7vw, 98px);
-  margin-bottom: 56px;
-}
-
-.work__heading {
-  margin: 0 0 16px;
-  font-weight: 700;
-  font-size: 30px;
-  line-height: 1.5;
-  color: #000;
-}
-
-.work__subheading {
-  margin: 0;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 1.5;
-  color: #000;
-}
-
-.work__track {
   display: flex;
-  gap: 32px;
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  padding: 0 clamp(24px, 7vw, 98px);
-  scrollbar-width: thin;
-}
-
-.work__card {
-  flex-shrink: 0;
-  scroll-snap-align: start;
-  width: 300px;
-  opacity: 0;
-  transform: rotate(-8deg) scale(0.94) translateY(24px);
-}
-
-.work--visible .work__card {
-  animation: work-card-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: var(--delay, 0s);
-}
-
-@keyframes work-card-in {
-  0% {
-    opacity: 0;
-    transform: rotate(-8deg) scale(0.94) translateY(24px);
-  }
-  45% {
-    opacity: 1;
-    transform: rotate(5deg) scale(1.02) translateY(-4px);
-  }
-  70% {
-    transform: rotate(-2.5deg) scale(1) translateY(2px);
-  }
-  100% {
-    opacity: 1;
-    transform: rotate(0deg) scale(1) translateY(0);
-  }
-}
-
-.work__card img {
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(48px, 16vw, 237px);
   width: 100%;
-  height: auto;
-  object-fit: cover;
-  pointer-events: none;
-  display: block;
+  height: 100%;
+  background-color: #e7e7e5;
+  box-sizing: border-box;
 }
 
-.work__card-button {
+.work__bag {
   display: block;
-  width: 100%;
-  padding: 0;
+  padding: 10px;
   border: none;
   background: none;
   cursor: pointer;
 }
 
-@media (max-width: 900px) {
-  .work__card {
-    width: 220px;
-  }
+.work__bag img {
+  display: block;
+  height: 88vh;
+  width: auto;
+  max-width: 100%;
+  transform-origin: 50% 0;
+  will-change: transform;
+  pointer-events: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .work__card {
-    opacity: 1;
-    transform: none;
-    animation: none;
+@media (max-width: 900px) {
+  .work {
+    gap: 16px;
+  }
+
+  .work__bag img {
+    height: auto;
+    width: 100%;
+  }
+
+  .work__bag {
+    flex: 1 1 0;
+    min-width: 0;
   }
 }

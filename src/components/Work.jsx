@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
-import bagJaeyoung from '../assets/desktop9/bag-jaeyoungcho.png'
+import { useEffect, useRef } from 'react'
 import bagSulshasoo from '../assets/desktop9/bag-sulshasoo.png'
 import bagZipmate from '../assets/desktop9/bag-zipmate.png'
 import sulshasooDetail from '../assets/projects/sulshasoo-detail.png'
@@ -7,11 +6,12 @@ import zipmateDetail from '../assets/projects/zipmate-detail.png'
 import './Work.css'
 
 export const projects = [
-  { id: 'jaeyoungcho', name: 'jae young cho', image: bagJaeyoung },
   {
     id: 'sulshasoo',
     name: 'Sulshasoo',
     image: bagSulshasoo,
+    heading: ['시간이 쌓아온 아름다움을,', '오늘의 화면으로 잇습니다.'],
+    sub: '설화수 웹사이트 리디자인 · 팀 프로젝트 · 기획, 디자인 100%',
     detail: {
       eyebrow: 'Project 1',
       name: 'Sulshasoo',
@@ -30,6 +30,8 @@ export const projects = [
     id: 'zipmate',
     name: 'Zipmate',
     image: bagZipmate,
+    heading: ['취향을 발견하는 순간부터,', '공간을 완성하는 순간까지.'],
+    sub: '셀프 인테리어 앱 기획 및 디자인 · 팀 프로젝트 · 기획, 디자인 100%',
     detail: {
       eyebrow: 'Project 2',
       name: 'Zipmate',
@@ -48,61 +50,111 @@ export const projects = [
   },
 ]
 
-function Work({ onSelectProject }) {
-  const sectionRef = useRef(null)
-  const [isVisible, setIsVisible] = useState(false)
+// A hanging bag modelled as a damped pendulum around its hook. Moving the
+// pointer across it pushes it in that direction; a spring pulls it back, so it
+// swings and settles on its own instead of replaying a canned animation.
+function SwingingBag({ project, onSelect }) {
+  const btnRef = useRef(null)
+  const imgRef = useRef(null)
+  const state = useRef({ angle: 0, vel: 0, squish: 0, squishVel: 0, raf: 0, lastX: null })
 
   useEffect(() => {
-    const node = sectionRef.current
-    if (!node) return undefined
+    const st = state.current
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let last = 0
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.25 },
-    )
-    observer.observe(node)
-    return () => observer.disconnect()
+    const step = (t) => {
+      const dt = Math.min((t - (last || t)) / 1000, 0.032)
+      last = t
+      // torsion spring + damping (pendulum)
+      st.vel += (-38 * st.angle - 3.2 * st.vel) * dt
+      st.vel = Math.max(-90, Math.min(90, st.vel))
+      st.angle += st.vel * dt
+      // vertical squish spring
+      st.squishVel += (-90 * st.squish - 7 * st.squishVel) * dt
+      st.squish += st.squishVel * dt
+
+      const img = imgRef.current
+      if (img) {
+        img.style.transform = `rotate(${st.angle}deg) scale(${1 - st.squish * 0.5}, ${1 + st.squish})`
+      }
+
+      const resting =
+        Math.abs(st.angle) < 0.02 && Math.abs(st.vel) < 0.05 &&
+        Math.abs(st.squish) < 0.001 && Math.abs(st.squishVel) < 0.01
+      if (resting) {
+        if (img) img.style.transform = ''
+        st.raf = 0
+        last = 0
+      } else {
+        st.raf = requestAnimationFrame(step)
+      }
+    }
+
+    const wake = () => {
+      if (!st.raf) st.raf = requestAnimationFrame(step)
+    }
+
+    const onEnter = (e) => {
+      if (reduce) return
+      st.lastX = e.clientX
+      st.squishVel += 0.6
+      st.vel += (Math.random() < 0.5 ? -1 : 1) * 14
+      wake()
+    }
+    const onMove = (e) => {
+      if (reduce) return
+      if (st.lastX !== null) {
+        const dx = e.clientX - st.lastX
+        st.vel += Math.max(-40, Math.min(40, dx * 0.9))
+        wake()
+      }
+      st.lastX = e.clientX
+    }
+    const onDown = () => {
+      if (reduce) return
+      st.squishVel -= 0.9
+      wake()
+    }
+    const onLeave = () => {
+      st.lastX = null
+    }
+
+    const btn = btnRef.current
+    btn.addEventListener('pointerenter', onEnter)
+    btn.addEventListener('pointermove', onMove)
+    btn.addEventListener('pointerdown', onDown)
+    btn.addEventListener('pointerleave', onLeave)
+    return () => {
+      cancelAnimationFrame(st.raf)
+      btn.removeEventListener('pointerenter', onEnter)
+      btn.removeEventListener('pointermove', onMove)
+      btn.removeEventListener('pointerdown', onDown)
+      btn.removeEventListener('pointerleave', onLeave)
+    }
   }, [])
 
   return (
-    <section className={`work${isVisible ? ' work--visible' : ''}`} ref={sectionRef}>
-      <div className="work__text">
-        <h2 className="work__heading">
-          일상의 작은 불편함에,
-          <br />
-          더 나은 경험을 처방합니다.
-        </h2>
-        <p className="work__subheading">사용자의 마음을 살피는 UX/UI 디자이너</p>
-      </div>
+    <button
+      ref={btnRef}
+      type="button"
+      className="work__bag"
+      onClick={() => onSelect(project.detail)}
+      aria-label={`${project.name} 프로젝트 상세 보기`}
+    >
+      <img ref={imgRef} src={project.image} alt={`${project.name} 프로젝트 썸네일`} />
+    </button>
+  )
+}
 
-      <div className="work__track" aria-label="프로젝트 미리보기">
-        {projects.map((project, i) => (
-          <div
-            className="work__card"
-            key={project.id}
-            style={{ '--delay': `${i * 0.15}s` }}
-          >
-            {project.detail ? (
-              <button
-                type="button"
-                className="work__card-button"
-                onClick={() => onSelectProject(project.detail)}
-                aria-label={`${project.name} 프로젝트 상세 보기`}
-              >
-                <img src={project.image} alt={`${project.name} 프로젝트 썸네일`} />
-              </button>
-            ) : (
-              <img src={project.image} alt={`${project.name} 프로젝트 썸네일`} />
-            )}
-          </div>
-        ))}
-      </div>
-    </section>
+// The screen revealed after the Intro: the two project bags side by side.
+function Work({ onSelectProject }) {
+  return (
+    <div className="work">
+      {projects.map((project) => (
+        <SwingingBag key={project.id} project={project} onSelect={onSelectProject} />
+      ))}
+    </div>
   )
 }
 

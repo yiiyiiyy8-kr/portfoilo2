@@ -1,9 +1,6 @@
 import { useState } from 'react'
 import IntroReveal from './components/IntroReveal'
-import ScrollCue from './components/ScrollCue'
-import ToolsShowcase from './components/ToolsShowcase'
-import AboutMe from './components/AboutMe'
-import Footer from './components/Footer'
+import ScrollNav from './components/ScrollNav'
 import ProjectDetail from './components/ProjectDetail'
 
 function App() {
@@ -12,10 +9,7 @@ function App() {
   return (
     <>
       <IntroReveal onSelectProject={setActiveProject} />
-      <ScrollCue />
-      <ToolsShowcase />
-      <AboutMe />
-      <Footer />
+      <ScrollNav />
       {activeProject && (
         <ProjectDetail
           project={activeProject}
