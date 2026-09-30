@@ -26,6 +26,7 @@ const MENU = [
   { label: 'PROJECTS', to: 'projects' },
   { label: 'TOOL', to: 'tool' },
   { label: 'ABOUT ME', to: 'about' },
+  { label: 'CONTECT', to: 'contact' },
 ]
 
 // Figma frame is 1440 x 1024; the name scales with the window.
@@ -97,6 +98,7 @@ function Footer() {
       ctx.textBaseline = 'alphabetic'
       ctx.fillStyle = CYAN
       ctx.fillText(l.ch, S.pad, l.base)
+      return // flat letters: no speckle texture
 
       const d = S.dots
       const R = 88 * S.sc + 26
@@ -145,6 +147,16 @@ function Footer() {
 
       const measure = document.createElement('canvas').getContext('2d')
       measure.font = `900 ${S.font}px Inter, "Helvetica Neue", Arial, sans-serif`
+      // grow the type a touch so the long line runs from 24px to 24px like the Figma frame
+      const wantW = (FRAME.padR - 24) * S.sc
+      const haveW = measure.measureText(LINES[0]).width + (LINES[0].length - 1) * S.ls
+      const fit = clamp(wantW / haveW, 1, 1.12)
+      if (fit > 1.001) {
+        S.font *= fit
+        S.pad = 0.14 * S.font
+        measure.font = `900 ${S.font}px Inter, "Helvetica Neue", Arial, sans-serif`
+      }
+      S.baseline = (5 + 0.864 * 240 * (S.font / (FRAME.font * S.sc))) * S.sc
       makeDots()
 
       let gi = 0
@@ -186,7 +198,7 @@ function Footer() {
 
           const letter = {
             ch, el, canvas, ctx, w: boxW, h: boxH, boxX, boxY: top,
-            base: BASELINE_IN_BOX * S.sc,
+            base: S.baseline,
             cx: boxX + boxW / 2, // rest centre, block coordinates
             cy: top + boxH / 2,
             half: 0.5 * (adv - S.ls) * 0.9, // roughly half the glyph's width
@@ -223,6 +235,9 @@ function Footer() {
       // 0 when the footer's top is 80% of the way down the window, 1 the moment it is pinned:
       // every letter has finished rising by then, so a footer at rest is never half-revealed
       if (!reduce) S.p = clamp((0.8 * vh - top) / (0.8 * vh))
+      // how much of the window the rising footer already covers, for the section underneath
+      const about = document.querySelector('.vc')
+      if (about) about.style.setProperty('--cover', clamp((vh - top) / vh).toFixed(3))
       applyReveal()
 
       // pointer maths only runs while the footer is actually on screen
@@ -403,7 +418,7 @@ function Footer() {
           <ul className="site-footer__menu">
             {MENU.map((item) => (
               <li key={item.label}>
-                <button type="button" onClick={() => scrollToSection(item.to)}>
+                <button type="button" onClick={() => (item.to === 'contact' ? setContactOpen(true) : scrollToSection(item.to))}>
                   {item.label}
                 </button>
               </li>

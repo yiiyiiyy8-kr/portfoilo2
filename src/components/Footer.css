@@ -1,5 +1,12 @@
 .site-footer {
   position: relative;
+  /* the footer slides up OVER the bottom of About Me: it starts 50vh early (About Me is given the
+     same 50vh of extra length, so the last vial is fully in place before the footer arrives) */
+  margin-top: -50vh;
+  z-index: 5;
+  border-radius: 32px 32px 0 0;
+  overflow: clip; /* rounds the corners for the children too, and keeps the pinned part sticky */
+  box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.28);
   /* the pinned part lasts 70vh, long enough for the name to finish rising */
   height: 170vh;
   background-color: #242424;

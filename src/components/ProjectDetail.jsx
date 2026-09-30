@@ -117,7 +117,25 @@ function ProjectDetail({ project, onClose }) {
                 {line}
               </p>
             ))}
-            {project.link && (
+            {project.links && (
+              <ul
+                className="project-detail__links pd-rise"
+                style={d(0.72 + project.description.length * 0.07)}
+              >
+                {project.links.map((l) => (
+                  <li key={l.url}>
+                    <a href={l.url} target="_blank" rel="noopener noreferrer" aria-label={`${l.tag} 열기`}>
+                      <span className="project-detail__tag">{l.tag}</span>
+                      <span className="project-detail__short">
+                        {l.short}
+                        <span aria-hidden="true"> ↗</span>
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {!project.links && project.link && (
               <div
                 className="project-detail__link-row pd-rise"
                 style={d(0.72 + project.description.length * 0.07)}

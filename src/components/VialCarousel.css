@@ -330,3 +330,20 @@
 .vc__stage {
   z-index: 1;
 }
+
+/* While the footer slides up over this section, the stage behind it settles back a little and dims
+   (--cover goes 0 -> 1 as the footer rises; it is set by the footer's scroll handler). */
+.vc__sticky {
+  transform-origin: 50% 0;
+  transform: scale(calc(1 - var(--cover, 0) * 0.05));
+}
+
+.vc__sticky::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  background: #000;
+  opacity: calc(var(--cover, 0) * 0.5);
+  pointer-events: none;
+}

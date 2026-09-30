@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import bagSulshasoo from '../assets/desktop9/bag-sulshasoo.png'
 import bagZipmate from '../assets/desktop9/bag-zipmate.png'
-import sulshasooQr from '../assets/projects/sulshasoo-qr.png'
 import zipmateQr from '../assets/projects/zipmate-qr.png'
 import phoneMockup from '../assets/projects/sulshasoo-mockup.png'
 import toolFigma from '../assets/projects/tools/figma.png'
@@ -53,8 +52,20 @@ export const projects = [
         imageLeft: 918,
       },
       footer: { duration: '5.22 - 8.11', tools },
-      link: 'https://harperppppppp.github.io/sulwhasoo/',
-      qr: sulshasooQr,
+      // two different things, so each carries a small tag; the full address stays in `url`
+      // while `short` is the (much shorter) text shown on the page
+      links: [
+        {
+          tag: '리디자인 사이트',
+          short: 'harperppppppp.github.io',
+          url: 'https://harperppppppp.github.io/sulwhasoo/',
+        },
+        {
+          tag: '기획서',
+          short: 'figma.com/deck',
+          url: 'https://www.figma.com/deck/knfKOBhKWNdLRnIM7fIG3i/%EC%A1%B0%EC%9E%AC%EC%98%81_-%ED%8C%80%ED%94%8C1-1%EC%A1%B0--%EA%B2%B0%EA%B3%BC%EB%B3%B4%EA%B3%A0%EC%84%9C_%EC%84%A4%ED%99%94%EC%88%98-%ED%95%9C%EB%B0%A9---%EB%B3%B5%EC%82%AC-?node-id=8088-7562&t=vH4d2oREvbZs8jgQ-1',
+        },
+      ],
     },
   },
   {

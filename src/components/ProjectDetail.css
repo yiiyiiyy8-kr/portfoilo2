@@ -420,3 +420,75 @@
 .project-detail__link:hover span {
   transform: translate(3px, -3px);
 }
+
+/* labelled links under the description (project site / planning document) */
+.project-detail__links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-detail__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* the small tag tells the two links apart at a glance */
+.project-detail__tag {
+  flex: none;
+  min-width: 108px;
+  box-sizing: border-box;
+  padding: 4px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-align: center;
+  white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.project-detail__short {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+  padding-bottom: 1px;
+  white-space: nowrap;
+  transition: border-color 0.3s ease;
+}
+
+.project-detail__short span {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-detail__links a:hover .project-detail__tag,
+.project-detail__links a:focus-visible .project-detail__tag {
+  background: #fff;
+  color: #141620;
+  border-color: #fff;
+}
+
+.project-detail__links a:hover .project-detail__short,
+.project-detail__links a:focus-visible .project-detail__short {
+  border-color: #fff;
+}
+
+.project-detail__links a:hover .project-detail__short span {
+  transform: translate(3px, -3px);
+}
+
+.project-detail__links a:focus-visible {
+  outline: 2px solid #83e2ff;
+  outline-offset: 4px;
+  border-radius: 6px;
+}

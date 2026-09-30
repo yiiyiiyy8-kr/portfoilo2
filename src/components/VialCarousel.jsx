@@ -475,7 +475,7 @@ function VialCarousel() {
     <section
       className="vc"
       ref={sectionRef}
-      style={{ height: `calc(${(N - 1) * STEP_VH * 100}vh + 100vh)` }}
+      style={{ height: `calc(${(N - 1) * STEP_VH * 100}vh + 150vh)` }}
       aria-label="About Me"
     >
       <div
