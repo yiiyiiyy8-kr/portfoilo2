@@ -129,8 +129,8 @@
 .project-detail__image {
   position: absolute;
   left: var(--image-left, 918px);
-  top: 131px;
-  width: 351px;
+  top: var(--image-top, 131px);
+  width: var(--image-w, 351px);
 }
 
 .project-detail__image img {

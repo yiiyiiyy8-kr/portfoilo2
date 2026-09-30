@@ -13,15 +13,14 @@ import './VialCarousel.css'
 // clicking the centred vial opens its detail view.
 // ---------------------------------------------------------------------------
 
-// Every vial shares the label copy from the Figma frames until real copy exists.
-const YEAR = '2018.03 - 2022.06'
-const PROJECT = '푸른 곰팡이 / SALON DE MAD /  '
-
-const VIALS = ['THEATER', 'VIDEO', 'MBC', 'METLIFE', 'FELICITY', 'UX/UI'].map((name) => ({
-  name,
-  year: YEAR,
-  project: PROJECT,
-}))
+const VIALS = [
+  { name: 'THEATER', year: '2018.03 - 2022.06', project: ['푸른 곰팡이', '어차피 겪어야 할 사랑이야기', '살롱드 매드', '경성인사이드'].join('\n') },
+  { name: 'VIDEO', year: '2022.06 - 2022.11', project: ['(산대특)_영상을 활용한', '광고디자인 출판 전문가 과정'].join('\n') },
+  { name: 'MBC', year: '2023.04 - 2023.06', project: '물건너 온 아빠들' },
+  { name: 'METLIFE', year: '2024.04 - 2025.04', project: '메트라이프 L&D팀' },
+  { name: 'FELICITY', year: '2025.05 - 2026.02', project: '펠리시티 영상팀' },
+  { name: 'UX/UI', year: '2026.04 - 2026.10', project: ['AI 활용 UXUI디자인&웹기획', '프론트 엔드 부트캠프'].join('\n') },
+]
 
 // the glass colour of each vial (THEATER, VIDEO, MBC, METLIFE, FELICITY, UX/UI): its halo takes this tint
 const VIAL_GLOW = ['79, 208, 220', '150, 214, 70', '240, 216, 74', '244, 152, 92', '232, 100, 106', '182, 110, 226']

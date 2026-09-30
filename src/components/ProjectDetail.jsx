@@ -66,6 +66,8 @@ function ProjectDetail({ project, onClose }) {
     stageStyle['--desc-ls'] = `${layout.descSpacing}px`
     stageStyle['--footer-left'] = `${layout.footerLeft}px`
     stageStyle['--image-left'] = `${layout.imageLeft}px`
+    if (layout.imageTop) stageStyle['--image-top'] = `${layout.imageTop}px`
+    if (layout.imageWidth) stageStyle['--image-w'] = `${layout.imageWidth}px`
   }
 
   // each piece rises in after the last: `--d` is its delay in seconds

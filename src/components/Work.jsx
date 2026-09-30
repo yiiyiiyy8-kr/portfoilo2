@@ -3,6 +3,7 @@ import bagSulshasoo from '../assets/desktop9/bag-sulshasoo.png'
 import bagZipmate from '../assets/desktop9/bag-zipmate.png'
 import zipmateQr from '../assets/projects/zipmate-qr.png'
 import phoneMockup from '../assets/projects/sulshasoo-mockup.png'
+import laptopMockup from '../assets/projects/sulshasoo-laptop.png'
 import toolFigma from '../assets/projects/tools/figma.png'
 import toolFramer from '../assets/projects/tools/framer.png'
 import toolReact from '../assets/projects/tools/react.png'
@@ -41,7 +42,7 @@ export const projects = [
         '전통과 현대가 공존하는 브랜드 경험을',
         '디지털 공간에서도 온전히 느낄 수 있도록 설화수 웹사이트를 리디자인했습니다.',
       ],
-      image: phoneMockup,
+      image: laptopMockup,
       layout: {
         textTop: 194,
         textGap: 59,
@@ -49,7 +50,9 @@ export const projects = [
         descSize: 14,
         descSpacing: 0.7,
         footerLeft: 108,
-        imageLeft: 918,
+        imageLeft: 800,
+        imageTop: 250,
+        imageWidth: 560,
       },
       footer: { duration: '5.22 - 8.11', tools },
       // two different things, so each carries a small tag; the full address stays in `url`

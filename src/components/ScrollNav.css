@@ -12,6 +12,7 @@
 }
 
 .scroll-nav-label {
+  font-family: 'NanumSquareNeo', var(--sans);
   font-weight: 700;
   font-size: 10px;
   color: #525252;
@@ -44,6 +45,7 @@
 }
 
 .scroll-nav-label {
+  font-family: 'NanumSquareNeo', var(--sans);
   animation: scroll-nav-pulse 1.6s ease-in-out infinite;
 }
 
