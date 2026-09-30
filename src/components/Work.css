@@ -1,4 +1,5 @@
 .work {
+  font-family: 'NanumSquareNeo', var(--sans);
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -22,7 +23,6 @@
   line-height: 1.5;
   color: #000;
   white-space: nowrap;
-  pointer-events: none;
 }
 
 .work__bag {

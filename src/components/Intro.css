@@ -208,3 +208,45 @@
 .intro > .intro__brand {
   position: absolute;
 }
+
+/* ---- shiny text (React Bits "Shiny Text" idea) on the two headline lines ----
+   A soft white band glides across the letters, then rests before gliding again.
+   It is painted with background-clip: text, so it can only ever appear on the glyphs. It starts
+   once the letters have finished rising in; the second line follows a beat behind. */
+.intro__line-inner {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-image:
+    linear-gradient(
+      105deg,
+      rgba(255, 255, 255, 0) 42%,
+      rgba(255, 255, 255, 0.78) 50%,
+      rgba(255, 255, 255, 0) 58%
+    ),
+    linear-gradient(var(--base), var(--base));
+  background-size: 260% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0, 0 0;
+}
+
+.intro__line-inner {
+  animation:
+    intro-line-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    intro-shine 5.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: var(--d), calc(1.5s + var(--d) * 2);
+}
+
+@keyframes intro-shine {
+  0%   { background-position: 100% 0, 0 0; }
+  38%  { background-position: 0% 0, 0 0; }
+  100% { background-position: 0% 0, 0 0; } /* rests, then sweeps again */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro__line-inner {
+    animation: none;
+    background-image: linear-gradient(var(--base), var(--base));
+  }
+}

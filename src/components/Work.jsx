@@ -14,6 +14,7 @@ import toolVscode from '../assets/projects/tools/vscode.png'
 import toolClaude from '../assets/projects/tools/claude.png'
 import toolGithub from '../assets/projects/tools/github.png'
 import Aurora from './Aurora'
+import { toggleSectionMenu } from '../sections'
 import './Work.css'
 
 const tools = [
@@ -192,7 +193,9 @@ function Work({ onSelectProject }) {
   return (
     <div className="work">
       <Aurora className="work__aurora" />
-      <p className="work__brand">Project</p>
+      <button type="button" className="work__brand sm-trigger" data-section="projects" onClick={() => toggleSectionMenu('projects')} aria-haspopup="menu">
+        Project
+      </button>
       {projects.map((project) => (
         <SwingingBag key={project.id} project={project} onSelect={onSelectProject} />
       ))}

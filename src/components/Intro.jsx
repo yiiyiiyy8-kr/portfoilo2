@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react'
 import introImg from '../assets/intro-ivbag.png'
 import Aurora from './Aurora'
 import PaperOverlay from './PaperOverlay'
+import { toggleSectionMenu } from '../sections'
 import RippleImage from './RippleImage'
 import './Intro.css'
 
@@ -15,7 +16,9 @@ function Intro() {
     <section className="intro">
       <Aurora className="intro__aurora" />
 
-      <p className="intro__brand">Portfolio</p>
+      <button type="button" className="intro__brand sm-trigger" data-section="intro" onClick={() => toggleSectionMenu('intro')} aria-haspopup="menu">
+        Portfolio
+      </button>
 
       <div className="intro__text">
         <h1 className="intro__heading">

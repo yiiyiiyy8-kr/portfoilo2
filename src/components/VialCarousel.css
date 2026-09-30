@@ -14,6 +14,7 @@
 }
 
 .vc__title {
+  font-family: 'NanumSquareNeo', var(--sans); /* h2 would otherwise pick up the global heading font */
   position: absolute;
   z-index: 30;
   left: 32px;
@@ -25,7 +26,6 @@
   line-height: 1.5;
   color: #000;
   white-space: nowrap;
-  pointer-events: none;
 }
 
 /* fixed design frame (1440 x 1024 desktop, 720 x 1280 portrait), scaled to fit */
@@ -76,6 +76,9 @@
   width: 1440px;
   height: 1024px;
   transform-origin: 0 0;
+  /* the cards' own z-order lives inside this box, so it can never climb over the text or vial */
+  z-index: 1;
+  isolation: isolate;
 }
 
 .vc__pop {
@@ -116,6 +119,19 @@
   background: #fff;
   border: 1px solid #000;
   box-sizing: border-box;
+  touch-action: none; /* a finger drags the card, it never scrolls the page */
+}
+
+/* once the detail is open the cards can be picked up (the layer itself stays click-through) */
+.vc__sticky.is-open .vc__box {
+  pointer-events: auto;
+  cursor: grab;
+  user-select: none;
+}
+
+.vc__sticky.is-open .vc__box.is-grabbed {
+  cursor: grabbing;
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.22);
 }
 
 .vc__pop--b1 { left: 968px; top: 150px; }
@@ -126,6 +142,8 @@
 .vc__info {
   position: absolute;
   inset: 0;
+  z-index: 2; /* always above the cards */
+  pointer-events: none;
   opacity: 0;
   transform: translate3d(0, 24px, 0);
   transition: opacity 0.3s ease, transform 0.4s ease;
@@ -182,4 +200,133 @@
     transition-duration: 0.01s !important;
     transition-delay: 0s !important;
   }
+}
+
+/* the heading button inside the h2 keeps the h2's look (40px ExtraBold) */
+.vc__title .sm-trigger {
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+}
+
+/* heading letters rise out of a mask, once the section is about halfway in (data-in) */
+.vc__title .sm-trigger {
+  overflow: hidden;
+  padding-bottom: 0.14em;
+}
+
+.vc__title-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(115%) rotate(8deg);
+  transform-origin: 0 100%;
+  transition: opacity 0.2s ease, transform 0.25s ease;
+}
+
+.vc[data-in] .vc__title-char {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.6s ease calc(var(--i) * 0.07s),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 0.07s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vc__title-char {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---- shiny sweep (React Bits "Shiny Text" idea, applied to the sharp vial) ----
+   A soft white band glides along the vial's length; it is masked to the vial's own outline,
+   so light only ever falls on the glass and cap. Blurred vials get none (--shine is 0). */
+.vc__shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--shine, 0);
+  background-image: linear-gradient(
+    105deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation: vc-shine 3.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transition: opacity 0.35s ease;
+}
+
+@keyframes vc-shine {
+  0%   { background-position: 100% 0; }
+  55%  { background-position: 0% 0; }
+  100% { background-position: 0% 0; } /* rests, then sweeps again */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vc__shine {
+    animation: none;
+    display: none;
+  }
+}
+
+/* ---- the vial picture lives in its own layer so the halo can sit underneath it ---- */
+.vc__img {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+/* ---- gentle glow around the sharp vial ----
+   The fill (the vial's silhouette in its glass colour) is masked to the vial; the wrapper then
+   blurs it, so the colour spills softly past the edges. It is only visible while the vial is sharp
+   (--shine is 1 at the centre, 0 for the blurred ones) and it breathes very slowly. */
+.vc__halo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  filter: blur(20px);
+  opacity: calc(var(--shine, 0) * 0.5);
+  transform: scale(1.04);
+  animation: vc-breathe 4.6s ease-in-out infinite;
+  transition: opacity 0.35s ease;
+}
+
+.vc__halo-fill {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(var(--glow, 255, 255, 255));
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@keyframes vc-breathe {
+  0%, 100% { transform: scale(1.03); }
+  50%      { transform: scale(1.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vc__halo {
+    animation: none;
+  }
+}
+
+/* dot field behind everything in the section (vials, tray and text sit above it) */
+.vc__dots {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  display: block;
+  pointer-events: none;
+}
+
+.vc__stage {
+  z-index: 1;
 }

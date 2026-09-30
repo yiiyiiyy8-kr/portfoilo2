@@ -4,6 +4,7 @@ import ToolsShowcase from './components/ToolsShowcase'
 import VialCarousel from './components/VialCarousel'
 import Footer from './components/Footer'
 import ScrollNav from './components/ScrollNav'
+import SectionMenu from './components/SectionMenu'
 import ProjectDetail from './components/ProjectDetail'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
       <VialCarousel />
       <Footer />
       <ScrollNav />
+      <SectionMenu />
       {activeProject && (
         <ProjectDetail
           project={activeProject}

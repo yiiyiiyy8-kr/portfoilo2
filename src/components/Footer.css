@@ -23,7 +23,7 @@
 .site-footer__tab {
   position: absolute;
   top: 52px;
-  right: 2px;
+  right: 0; /* flush with the window edge, always */
   display: flex;
   align-items: center;
   padding: 18px 7px;
@@ -32,14 +32,21 @@
   border: none;
   font: inherit;
   cursor: pointer;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: padding-left 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* the tab leans out a little on hover, hinting that it slides something out */
+/* on hover the tab grows out toward the left while its right edge stays on the window edge,
+   so no gap ever opens on the right */
 .site-footer__tab:hover,
 .site-footer__tab:focus-visible {
-  transform: translateX(-8px);
+  padding-left: 17px;
   outline: none;
+}
+
+/* the word swells too */
+.site-footer__tab:hover .site-footer__tab-text,
+.site-footer__tab:focus-visible .site-footer__tab-text {
+  font-size: 25px;
 }
 
 .site-footer__tab-text {
@@ -53,6 +60,7 @@
   line-height: 1.5;
   color: #000;
   white-space: nowrap;
+  transition: font-size 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* the big name: the canvas is exactly the block, so it can never overflow */

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import ContactPanel from './ContactPanel'
+import { scrollToSection } from '../sections'
 import './Footer.css'
 
 // ---------------------------------------------------------------------------
@@ -37,20 +38,6 @@ const SPRING_K = 150
 const SPRING_C = 17
 
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v))
-
-function scrollToSection(to) {
-  const vh = window.innerHeight
-  let top = 0
-  if (to === 'projects') {
-    const el = document.querySelector('.intro-reveal')
-    top = el ? el.offsetTop + vh * 0.35 : 0
-  } else if (to === 'tool') {
-    top = document.querySelector('.tools')?.offsetTop ?? 0
-  } else if (to === 'about') {
-    top = document.querySelector('.vc')?.offsetTop ?? 0
-  }
-  window.scrollTo({ top, behavior: 'smooth' })
-}
 
 function Footer() {
   const [contactOpen, setContactOpen] = useState(false)

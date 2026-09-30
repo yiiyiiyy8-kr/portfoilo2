@@ -64,7 +64,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -6px;
+  gap: 1px;
+  margin-top: 8px; /* clear of the pill */
 }
 
 .scroll-nav-chevrons i {
@@ -73,7 +74,7 @@
   border-right: 2px solid #525252;
   border-bottom: 2px solid #525252;
   transform: rotate(45deg);
-  margin-top: -3px;
+  margin-top: 0;
   opacity: 0;
   animation: scroll-nav-chevron 1.6s ease-in-out infinite;
 }
@@ -88,7 +89,7 @@
 }
 
 @keyframes scroll-nav-chevron {
-  0%   { opacity: 0; transform: translateY(-4px) rotate(45deg); }
+  0%   { opacity: 0; transform: translateY(-2px) rotate(45deg); }
   50%  { opacity: 1; }
   100% { opacity: 0; transform: translateY(6px) rotate(45deg); }
 }
@@ -117,4 +118,60 @@
 .scroll-nav.is-hidden {
   opacity: 0;
   pointer-events: none;
+}
+
+/* ---- pill + chevrons live in one body so the pair can switch direction together ---- */
+.scroll-nav-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scroll-nav-indicator {
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease,
+    width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---- sideways mode (Tools): the pill lies down, the dot travels left to right, chevrons point right ---- */
+.scroll-nav[data-mode='horizontal'] .scroll-nav-body {
+  flex-direction: row;
+}
+
+.scroll-nav[data-mode='horizontal'] .scroll-nav-indicator {
+  width: 53px;
+  height: 35px;
+}
+
+.scroll-nav[data-mode='horizontal'] .scroll-nav-dot {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 8px;
+  height: 3px;
+  animation: none; /* no movement in sideways mode */
+}
+
+.scroll-nav[data-mode='horizontal'] .scroll-nav-chevrons {
+  flex-direction: row;
+  gap: 1px;
+  margin-top: 0;
+  margin-left: 8px; /* clear of the pill */
+}
+
+.scroll-nav[data-mode='horizontal'] .scroll-nav-chevrons i {
+  margin-top: 0;
+  margin-left: 0;
+  transform: rotate(-45deg);
+  animation-name: scroll-nav-chevron-x;
+}
+
+@keyframes scroll-nav-chevron-x {
+  0%   { opacity: 0; transform: translateX(-2px) rotate(-45deg); }
+  50%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(6px) rotate(-45deg); }
 }

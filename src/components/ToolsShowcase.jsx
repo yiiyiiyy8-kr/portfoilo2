@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import toolBg from '../assets/desktop9/tool-bg.png'
+import { toggleSectionMenu } from '../sections'
 import './ToolsShowcase.css'
 
 // Each frame is the 1440 x 1024 Figma frame; the whole strip is dragged
@@ -400,15 +401,103 @@ function ToolsShowcase() {
     [place],
   )
 
+  // Snap: when a scroll comes to rest close to the start of this section (and was heading toward
+  // it), ease the page so the section starts exactly at the top of the window. Only the Tools
+  // boundary is touched: nothing is forced while scrolling, and scrolling on from the snapped
+  // spot (either way) is completely free because that counts as moving away from the section.
+  useEffect(() => {
+    const section = sectionRef.current
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const ZONE = 0.3 // how close (fraction of the window height) counts as "close"
+    const IDLE_MS = 150
+    const DURATION = 650
+    let idleTimer = 0
+    let gestureStart = null
+    let raf = 0
+    let snapping = false
+
+    const cancel = () => {
+      if (raf) cancelAnimationFrame(raf)
+      raf = 0
+      snapping = false
+      gestureStart = null
+    }
+
+    const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+
+    const snapTo = (target) => {
+      if (reduce) {
+        window.scrollTo(0, target)
+        return
+      }
+      const from = window.scrollY
+      const dist = target - from
+      const t0 = performance.now()
+      snapping = true
+      const step = (now) => {
+        const t = Math.min((now - t0) / DURATION, 1)
+        window.scrollTo(0, from + dist * easeInOut(t))
+        if (t < 1) raf = requestAnimationFrame(step)
+        else {
+          raf = 0
+          snapping = false
+          gestureStart = null
+        }
+      }
+      raf = requestAnimationFrame(step)
+    }
+
+    const onIdle = () => {
+      const moved = gestureStart == null ? 0 : window.scrollY - gestureStart
+      gestureStart = null
+      const top = section.getBoundingClientRect().top
+      const vh = window.innerHeight
+      if (Math.abs(top) < 2 || Math.abs(top) > vh * ZONE) return
+      // heading toward the section start: from above (down) or from below (up)
+      const approaching = (top > 0 && moved > 0) || (top < 0 && moved < 0)
+      if (approaching) snapTo(window.scrollY + top)
+    }
+
+    const onScroll = () => {
+      if (snapping) return // our own easing produces these
+      if (gestureStart == null) gestureStart = window.scrollY
+      window.clearTimeout(idleTimer)
+      idleTimer = window.setTimeout(onIdle, IDLE_MS)
+    }
+
+    // the moment the user grabs the scroll again, the snap gives way
+    const yieldToUser = () => cancel()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('wheel', yieldToUser, { passive: true })
+    window.addEventListener('touchstart', yieldToUser, { passive: true })
+    window.addEventListener('keydown', yieldToUser)
+    window.addEventListener('pointerdown', yieldToUser, { passive: true })
+    return () => {
+      cancel()
+      window.clearTimeout(idleTimer)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('wheel', yieldToUser)
+      window.removeEventListener('touchstart', yieldToUser)
+      window.removeEventListener('keydown', yieldToUser)
+      window.removeEventListener('pointerdown', yieldToUser)
+    }
+  }, [])
+
   // Scroll-linked reveal: the strip fades in as the section rises into view,
   // so the hand-off from the bag screen isn't a hard cut.
   useEffect(() => {
     const section = sectionRef.current
     const update = () => {
-      const { top } = section.getBoundingClientRect()
+      const { top, bottom } = section.getBoundingClientRect()
       const vh = window.innerHeight
       const p = Math.min(Math.max((vh - top) / (vh * 0.7), 0), 1)
       section.style.setProperty('--reveal', String(p * p * (3 - 2 * p)))
+
+      // heading interaction: on once the section is about halfway in, off again after it has
+      // clearly left (a gap between the two so it doesn't flicker at the threshold)
+      const isIn = section.hasAttribute('data-in')
+      if (!isIn && top < vh * 0.4 && bottom > vh * 0.5) section.setAttribute('data-in', '')
+      else if (isIn && (top > vh * 0.8 || bottom < vh * 0.2)) section.removeAttribute('data-in')
     }
     update()
     window.addEventListener('scroll', update, { passive: true })
@@ -431,6 +520,23 @@ function ToolsShowcase() {
     ro.observe(el)
     return () => ro.disconnect()
   }, [place])
+
+  // a sideways trackpad swipe or shift + wheel steps the strip as well (one frame per gesture)
+  useEffect(() => {
+    const el = viewportRef.current
+    let lock = 0
+    const onWheel = (e) => {
+      const dx = e.shiftKey && e.deltaX === 0 ? e.deltaY : e.deltaX
+      if (Math.abs(dx) < 18 || (!e.shiftKey && Math.abs(dx) < Math.abs(e.deltaY) * 1.2)) return
+      e.preventDefault()
+      const now = performance.now()
+      if (now - lock < 650) return
+      lock = now
+      goTo(indexRef.current + (dx > 0 ? 1 : -1))
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [goTo])
 
   const onPointerDown = (e) => {
     if (e.pointerType === 'mouse' && e.button !== 0) return
@@ -532,7 +638,7 @@ function ToolsShowcase() {
           <div className="tools__stage" style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
             <FrameBackdrop extra={extra} blur={frames[index].blur} />
           </div>
-          <span className="tools__brand" aria-label="Tools">
+          <button type="button" className="tools__brand sm-trigger" data-section="tool" aria-label="Tools" aria-haspopup="menu" onClick={() => toggleSectionMenu('tool')}>
             {[...'Tools'].map((ch, i) => (
               <span
                 className="tools__brand-char"
@@ -543,7 +649,7 @@ function ToolsShowcase() {
                 {ch}
               </span>
             ))}
-          </span>
+          </button>
           <span className="tools__year">2026</span>
           <span className="tools__handle">@jaeyoung</span>
         </div>
