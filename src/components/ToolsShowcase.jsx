@@ -282,7 +282,7 @@ function FluidGlass({ viewportRef, dragging }) {
       <div
         ref={lensRef}
         className={`fluid-lens${dragging ? ' is-dragging' : ''}`}
-        style={{ width: LENS, height: LENS }}
+        style={{ width: LENS, height: LENS, backdropFilter: 'url(#fluid-glass) blur(0.6px)' }}
         aria-hidden="true"
       />
     </>

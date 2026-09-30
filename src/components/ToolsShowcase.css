@@ -228,8 +228,7 @@
   border-radius: 50%;
   pointer-events: none;
   opacity: 0;
-  backdrop-filter: url(#fluid-glass) blur(0.6px);
-  -webkit-backdrop-filter: url(#fluid-glass) blur(0.6px);
+  /* backdrop-filter: url(#fluid-glass) is set inline in ToolsShowcase.jsx (the build drops the unprefixed copy from CSS) */
   background:
     radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 38%),
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 55%, rgba(255, 255, 255, 0.28) 100%);
