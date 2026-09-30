@@ -1,0 +1,185 @@
+.vc {
+  position: relative;
+  background-color: #e7e7e5;
+  font-family: 'NanumSquareNeo', var(--sans);
+}
+
+.vc__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden; /* nothing may push the page sideways, on any screen */
+  background-color: #e7e7e5;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vc__title {
+  position: absolute;
+  z-index: 30;
+  left: 32px;
+  top: 10px;
+  margin: 0;
+  padding: 10px;
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 1.5;
+  color: #000;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* fixed design frame (1440 x 1024 desktop, 720 x 1280 portrait), scaled to fit */
+.vc__stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+/* ---------- vials ---------- */
+.vc__vial {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  transform-origin: 50% 50%;
+  cursor: pointer;
+  will-change: transform, filter, opacity;
+}
+
+.vc__vial:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 8px;
+}
+
+/* while opening / closing the detail, ease instead of following scroll 1:1 */
+.vc__sticky[data-tween] .vc__vial {
+  transition:
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.9s ease,
+    opacity 0.6s ease;
+}
+
+/* ---------- detail layer ---------- */
+.vc__detail {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.vc__group {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1440px;
+  height: 1024px;
+  transform-origin: 0 0;
+}
+
+.vc__pop {
+  position: absolute;
+  opacity: 0;
+  transform: translate3d(110px, 70px, 0) scale(0.9);
+  transition: opacity 0.35s ease, transform 0.5s ease;
+}
+
+.vc__sticky.is-open .vc__pop {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s ease var(--d, 0s),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s);
+}
+
+/* tray photo, rotated 165deg, 994 x 1382, centred at (1111, 807) */
+.vc__pop--tray {
+  left: 614px;
+  top: 116px;
+  width: 994px;
+  height: 1382px;
+}
+
+.vc__tray {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: rotate(165deg);
+  -webkit-user-drag: none;
+}
+
+/* three white slots for work images (501 x 501, 1px black border) */
+.vc__box {
+  width: 501.333px;
+  height: 501.333px;
+  background: #fff;
+  border: 1px solid #000;
+  box-sizing: border-box;
+}
+
+.vc__pop--b1 { left: 968px; top: 150px; }
+.vc__pop--b2 { left: 906px; top: 579px; }
+.vc__pop--b3 { left: 599px; top: 357px; }
+
+/* Year / Project */
+.vc__info {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition: opacity 0.3s ease, transform 0.4s ease;
+}
+
+.vc__sticky.is-open .vc__info {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.8s ease var(--d, 0s),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s);
+}
+
+.vc__label,
+.vc__value {
+  position: absolute;
+  font-family: 'Pretendard', 'NanumSquareNeo', var(--sans);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.5;
+  color: #000;
+  white-space: pre;
+}
+
+.vc__label--year { left: 99px; top: 379px; }
+.vc__value--year { left: 187px; top: 379px; }
+.vc__label--project { left: 99px; top: 409px; }
+.vc__value--project { left: 187px; top: 416px; }
+
+/* ---------- portrait (phones): its own 720 x 1280 frame ---------- */
+.vc__sticky.is-portrait .vc__pop--tray {
+  display: none;
+}
+
+.vc__sticky.is-portrait .vc__group {
+  transform: translate(120px, 750px) scale(0.42);
+}
+
+.vc__sticky.is-portrait .vc__label--year { left: 90px; top: 420px; }
+.vc__sticky.is-portrait .vc__value--year { left: 180px; top: 420px; }
+.vc__sticky.is-portrait .vc__label--project { left: 90px; top: 452px; }
+.vc__sticky.is-portrait .vc__value--project { left: 180px; top: 459px; font-size: 18px; }
+
+@media (max-width: 900px) {
+  .vc__title {
+    font-size: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vc__sticky[data-tween] .vc__vial,
+  .vc__pop,
+  .vc__info {
+    transition-duration: 0.01s !important;
+    transition-delay: 0s !important;
+  }
+}

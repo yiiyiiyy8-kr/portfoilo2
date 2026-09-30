@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import IntroReveal from './components/IntroReveal'
 import ToolsShowcase from './components/ToolsShowcase'
+import VialCarousel from './components/VialCarousel'
 import ScrollNav from './components/ScrollNav'
 import ProjectDetail from './components/ProjectDetail'
 
@@ -11,6 +12,7 @@ function App() {
     <>
       <IntroReveal onSelectProject={setActiveProject} />
       <ToolsShowcase />
+      <VialCarousel />
       <ScrollNav />
       {activeProject && (
         <ProjectDetail
