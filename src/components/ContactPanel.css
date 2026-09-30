@@ -1,0 +1,300 @@
+.cp {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* dim + soften the footer behind the card */
+.cp__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 20, 22, 0);
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+  transition:
+    background-color 0.6s ease,
+    backdrop-filter 0.6s ease,
+    -webkit-backdrop-filter 0.6s ease;
+}
+
+.cp.is-in .cp__scrim {
+  background: rgba(20, 20, 22, 0.45);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+/* the card glides in from the right edge and settles with a soft ease-out */
+.cp__card {
+  position: absolute;
+  top: 50%;
+  right: clamp(12px, 2.4vw, 32px);
+  width: min(420px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  box-sizing: border-box;
+  padding: 30px 26px 26px;
+  border-radius: 18px;
+  background: #f1f1f1;
+  color: #111;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translate3d(calc(100% + 60px), -50%, 0) scale(0.97);
+  transition:
+    transform 0.5s cubic-bezier(0.55, 0, 0.7, 0.2),
+    opacity 0.35s ease;
+}
+
+.cp.is-in .cp__card {
+  opacity: 1;
+  transform: translate3d(0, -50%, 0) scale(1);
+  transition:
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.5s ease;
+}
+
+.cp__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cp__close span {
+  position: absolute;
+  left: 8px;
+  top: 14px;
+  width: 14px;
+  height: 1.5px;
+  background: #111;
+  transform: rotate(45deg);
+}
+
+.cp__close span + span {
+  transform: rotate(-45deg);
+}
+
+.cp__close:hover {
+  background: rgba(0, 0, 0, 0.07);
+  transform: rotate(90deg);
+}
+
+.cp__close:focus-visible {
+  outline: 2px solid #111;
+}
+
+.cp__form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-family: 'Inter', var(--sans);
+}
+
+/* fields rise in one by one once the card has arrived */
+.cp__rise {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.cp.is-in .cp__rise {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s ease var(--d, 0s),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s);
+}
+
+.cp__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cp__label {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #1a1a1a;
+}
+
+.cp__input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 44px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  color: #111;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cp__input::placeholder {
+  color: #8b8b8b;
+}
+
+.cp__input:hover {
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.cp__input:focus {
+  border-color: #83e2ff;
+  box-shadow: 0 0 0 4px rgba(131, 226, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.cp__textarea {
+  height: 130px;
+  padding: 14px 16px;
+  resize: none;
+  line-height: 1.5;
+}
+
+.cp__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.cp__send {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 22px;
+  border: none;
+  border-radius: 10px;
+  background: #1c1c1e;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cp__send svg {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cp__send:hover {
+  background: #000;
+}
+
+.cp__send:hover svg {
+  transform: translateX(4px);
+}
+
+.cp__send:active {
+  transform: scale(0.97);
+}
+
+.cp__send:focus-visible {
+  outline: 2px solid #83e2ff;
+  outline-offset: 3px;
+}
+
+.cp__note {
+  margin: 0;
+  min-height: 1.4em;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #4a4a4a;
+}
+
+@media (max-width: 600px) {
+  .cp__card {
+    right: 12px;
+    padding: 28px 20px 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cp__card,
+  .cp__scrim,
+  .cp__rise {
+    transition-duration: 0.01s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* select styled like the other inputs, with its own chevron */
+.cp__select {
+  position: relative;
+  display: block;
+}
+
+.cp__select select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 42px;
+  cursor: pointer;
+}
+
+.cp__select svg {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  margin-top: -4px;
+  color: #444;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cp__select:focus-within svg {
+  transform: translateY(1px) rotate(180deg);
+}
+
+/* hidden anti-spam field */
+.cp__honey {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cp__send:disabled {
+  cursor: progress;
+  opacity: 0.75;
+}
+
+.cp__send.is-sending svg {
+  animation: cp-nudge 0.9s ease-in-out infinite;
+}
+
+@keyframes cp-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
+
+.cp__note.is-ok {
+  color: #1c7a4a;
+}
+
+.cp__note.is-error {
+  color: #b3261e;
+}
+
+.cp__note a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

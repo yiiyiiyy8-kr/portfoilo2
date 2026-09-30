@@ -157,7 +157,7 @@
   width: auto;
   max-width: 100%;
   transform-origin: 50% 0;
-  cursor: crosshair;
+  cursor: pointer;
   filter: saturate(0.8);
 }
 

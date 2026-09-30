@@ -1,0 +1,89 @@
+.paper-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  touch-action: none; /* fingers drag the paper, they never scroll the page behind it */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* the blur that settles over the intro (Figma "gaussian": blur 5.95px + white 10%) */
+.paper-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+  transition:
+    backdrop-filter 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    -webkit-backdrop-filter 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.8s ease;
+}
+
+.paper-overlay.is-in .paper-overlay__backdrop {
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(5.95px);
+  backdrop-filter: blur(5.95px);
+}
+
+/* fixed centre point the sheet is positioned around */
+.paper-overlay__anchor {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  pointer-events: none;
+}
+
+.paper {
+  position: relative;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.paper.is-grabbed {
+  cursor: grabbing;
+}
+
+/* soft shadow under the sheet, and the X drawn from the Figma frame */
+.paper {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+}
+
+.paper__mark {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* invisible close target over the mark drawn on the paper */
+.paper__x {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.paper__x:focus-visible {
+  outline: 2px solid #1ac9ff;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper-overlay__backdrop {
+    transition-duration: 0.01s;
+  }
+}

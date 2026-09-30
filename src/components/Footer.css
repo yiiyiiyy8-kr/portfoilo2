@@ -1,37 +1,178 @@
 .site-footer {
   position: relative;
-  background-color: #e7e7e5;
-  min-height: 60vh;
+  /* the pinned part lasts 70vh, long enough for the name to finish rising */
+  height: 170vh;
+  background-color: #242424;
+  color: #fff;
+}
+
+.site-footer__pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 640px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden; /* nothing may push the page sideways */
+  padding-bottom: 34px;
+  box-sizing: border-box;
+}
+
+/* vertical "contect" tab, top right */
+.site-footer__tab {
+  position: absolute;
+  top: 52px;
+  right: 2px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 18px 7px;
+  background-color: #83e2ff;
   overflow: hidden;
-  padding: 40px 24px;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.site-footer__image {
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(52vw, 759px);
-  height: auto;
-  object-fit: cover;
-  pointer-events: none;
+/* the tab leans out a little on hover, hinting that it slides something out */
+.site-footer__tab:hover,
+.site-footer__tab:focus-visible {
+  transform: translateX(-8px);
+  outline: none;
 }
 
-.site-footer__wordmark {
-  position: relative;
-  margin: 0;
-  /* Figma spec calls for 'YJ Obang' (a display serif); no verified free CDN
-     source was found, so we fall back to our existing ExtraBold with wide
-     tracking to approximate the bold, spaced-out wordmark look. */
+.site-footer__tab-text {
+  display: block;
+  padding: 10px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
   font-family: 'NanumSquareNeo', var(--sans);
   font-weight: 800;
-  font-size: clamp(20px, 9vw, 150px);
-  letter-spacing: 0.04em;
+  font-size: 20px;
+  line-height: 1.5;
   color: #000;
-  text-align: center;
   white-space: nowrap;
-  max-width: 100%;
+}
+
+/* the big name: the canvas is exactly the block, so it can never overflow */
+.site-footer__name {
+  position: relative;
+  width: 100%;
+  margin-bottom: 40px; /* height and margin are set by the script from the current scale */
+  line-height: 0;
+}
+
+/* one element per letter, absolutely placed: moving one never shifts another.
+   The letter box is a window: the rise inside it is masked by it, and the box
+   itself is what dodges the cursor (translate3d only). */
+.site-footer__letter {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.site-footer__letter canvas {
+  display: block;
+  will-change: transform;
+}
+
+.site-footer__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* thin cyan divider, full width */
+.site-footer__rule {
+  width: 100%;
+  height: 2px;
+  background-color: #83e2ff;
+}
+
+/* menu + year sit below the rule and never move with the name */
+.site-footer__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 34px;
+  padding: 0 48px 0 33px;
+}
+
+.site-footer__menu {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer__menu button {
+  padding: 10px;
+  border: none;
+  background: none;
+  font-family: 'Inter', var(--sans);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0.15px;
+  color: #fff;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.site-footer__menu button:hover,
+.site-footer__menu button:focus-visible {
+  color: #83e2ff;
+  outline: none;
+}
+
+.site-footer__year {
+  padding: 10px;
+  font-family: 'NanumSquareNeo', var(--sans);
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #fff;
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .site-footer__tab {
+    top: 24px;
+  }
+
+  .site-footer__tab-text {
+    font-size: 16px;
+  }
+
+  .site-footer__bar {
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    padding: 0 16px;
+  }
+
+  .site-footer__menu {
+    flex-wrap: wrap;
+    gap: 0 4px;
+  }
+
+  .site-footer__menu button {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+
+  .site-footer__year {
+    font-size: 12px;
+  }
 }

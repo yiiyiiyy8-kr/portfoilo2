@@ -109,3 +109,12 @@
     flex-direction: row;
   }
 }
+
+.scroll-nav {
+  transition: opacity 0.4s ease;
+}
+
+.scroll-nav.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}

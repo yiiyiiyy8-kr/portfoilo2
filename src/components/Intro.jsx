@@ -1,6 +1,7 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import introImg from '../assets/intro-ivbag.png'
 import Aurora from './Aurora'
+import PaperOverlay from './PaperOverlay'
 import RippleImage from './RippleImage'
 import './Intro.css'
 
@@ -8,6 +9,8 @@ const LINES = ['일상의 작은 불편함에,', '더 나은 경험을 처방합
 const SUB = '사용자의 마음을 살피는 UX/UI 디자이너'
 
 function Intro() {
+  const [paperOpen, setPaperOpen] = useState(false)
+
   return (
     <section className="intro">
       <Aurora className="intro__aurora" />
@@ -47,12 +50,26 @@ function Intro() {
         </p>
       </div>
 
-      <div className="intro__image">
+      <div
+        className="intro__image"
+        role="button"
+        tabIndex={0}
+        aria-label="종이 열기"
+        onClick={() => setPaperOpen(true)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            setPaperOpen(true)
+          }
+        }}
+      >
         <RippleImage
           src={introImg}
           alt="jae young cho, UX/UI 디자이너 소개 이미지"
         />
       </div>
+
+      {paperOpen && <PaperOverlay onClose={() => setPaperOpen(false)} />}
     </section>
   )
 }
