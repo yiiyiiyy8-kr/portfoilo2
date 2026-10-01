@@ -11,7 +11,7 @@ import toolTypescript from '../assets/projects/tools/typescript.png'
 import toolVite from '../assets/projects/tools/vite.png'
 import toolVercel from '../assets/projects/tools/vercel.png'
 import toolVscode from '../assets/projects/tools/vscode.png'
-import toolClaude from '../assets/projects/tools/claude.png'
+import toolCodex from '../assets/projects/tools/codex.png'
 import toolGithub from '../assets/projects/tools/github.png'
 import Aurora from './Aurora'
 import { toggleSectionMenu } from '../sections'
@@ -19,8 +19,8 @@ import './Work.css'
 
 const tools = [
   { label: 'Design', icons: [toolFigma, toolFramer] },
-  { label: 'Development', icons: [toolReact, toolTypescript, toolVite, toolVercel] },
-  { label: 'Ai', icons: [toolVscode, toolClaude] },
+  { label: 'Development', icons: [toolReact, toolTypescript, toolVite, toolVercel, toolVscode] },
+  { label: 'Ai', icons: [toolCodex] },
   { label: 'Collaboration', icons: [toolGithub] },
 ]
 
