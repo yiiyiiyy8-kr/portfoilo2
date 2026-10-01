@@ -122,6 +122,26 @@
   touch-action: none; /* a finger drags the card, it never scrolls the page */
 }
 
+/* a card holding a photo: white frame, thicker at the bottom like an instant print */
+.vc__box {
+  display: flex;
+}
+
+.vc__photo {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  object-fit: cover;
+  margin: 20px 20px 56px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* portrait photos are shown whole instead of being cropped to the frame */
+.vc__photo[data-fit='contain'] {
+  object-fit: contain;
+}
+
 /* once the detail is open the cards can be picked up (the layer itself stays click-through) */
 .vc__sticky.is-open .vc__box {
   pointer-events: auto;
@@ -346,4 +366,10 @@
   background: #000;
   opacity: calc(var(--cover, 0) * 0.5);
   pointer-events: none;
+}
+
+/* a vial with fewer photos than cards: the spare cards are not shown */
+.vc__box[data-empty='1'] {
+  visibility: hidden;
+  pointer-events: none !important;
 }

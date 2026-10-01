@@ -39,6 +39,7 @@
 
 .paper {
   position: relative;
+  container-type: inline-size; /* the text size follows the sheet's width */
   pointer-events: auto;
   cursor: grab;
   touch-action: none;
@@ -57,11 +58,35 @@
 
 .paper__mark {
   position: absolute;
-  inset: 0;
+  inset: 0 auto auto 0;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1;
   display: block;
   pointer-events: none;
+}
+
+/* the message: centred on the sheet, set in the dark teal of the paper's own hue */
+.paper__copy {
+  position: absolute;
+  left: 9%;
+  right: 9%;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* the block sits in the middle of the sheet */
+  gap: 1.15em;
+  font-family: 'NanumBarunGothic', 'Pretendard', var(--sans);
+  font-size: clamp(12px, 2.55cqw, 16px);
+  line-height: 1.85;
+  letter-spacing: -0.01em;
+  color: #0a2d38;
+  word-break: keep-all;
+  pointer-events: none;
+}
+
+.paper__copy p {
+  margin: 0;
 }
 
 /* invisible close target over the mark drawn on the paper */

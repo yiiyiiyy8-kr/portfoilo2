@@ -1,6 +1,21 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import vialSprite from '../assets/aboutme/vials.png'
 import trayImg from '../assets/aboutme/tray.png'
+import theater1 from '../assets/aboutme/theater-1.jpg'
+import theater2 from '../assets/aboutme/theater-2.jpg'
+import theater3 from '../assets/aboutme/theater-3.jpg'
+import mbc1 from '../assets/aboutme/mbc-1.jpg'
+import mbc2 from '../assets/aboutme/mbc-2.jpg'
+import mbc3 from '../assets/aboutme/mbc-3.jpg'
+import metlife1 from '../assets/aboutme/metlife-1.jpg'
+import metlife2 from '../assets/aboutme/metlife-2.jpg'
+import metlife3 from '../assets/aboutme/metlife-3.jpg'
+import uxui1 from '../assets/aboutme/uxui-1.jpg'
+import uxui2 from '../assets/aboutme/uxui-2.jpg'
+import uxui3 from '../assets/aboutme/uxui-3.jpg'
+import felicity1 from '../assets/aboutme/felicity-1.jpg'
+import felicity2 from '../assets/aboutme/felicity-2.jpg'
+import felicity3 from '../assets/aboutme/felicity-3.jpg'
 import { toggleSectionMenu } from '../sections'
 import DotField from './DotField'
 import './VialCarousel.css'
@@ -14,12 +29,12 @@ import './VialCarousel.css'
 // ---------------------------------------------------------------------------
 
 const VIALS = [
-  { name: 'THEATER', year: '2018.03 - 2022.06', project: ['푸른 곰팡이', '어차피 겪어야 할 사랑이야기', '살롱드 매드', '경성인사이드'].join('\n') },
-  { name: 'VIDEO', year: '2022.06 - 2022.11', project: ['(산대특)_영상을 활용한', '광고디자인 출판 전문가 과정'].join('\n') },
-  { name: 'MBC', year: '2023.04 - 2023.06', project: '물건너 온 아빠들' },
-  { name: 'METLIFE', year: '2024.04 - 2025.04', project: '메트라이프 L&D팀' },
-  { name: 'FELICITY', year: '2025.05 - 2026.02', project: '펠리시티 영상팀' },
-  { name: 'UX/UI', year: '2026.04 - 2026.10', project: ['AI 활용 UXUI디자인&웹기획', '프론트 엔드 부트캠프'].join('\n') },
+  { name: 'THEATER', photos: [theater1, [theater2, 'contain'], theater3], year: '2018.03 - 2022.06', project: ['푸른 곰팡이', '어차피 겪어야 할 사랑이야기', '살롱드 매드', '경성인사이드'].join('\n') },
+  { name: 'VIDEO', year: '2022.06 - 2022.11', project: ['기획부터 편집까지 참여한', '영상 콘텐츠'].join('\n') },
+  { name: 'MBC', photos: [[mbc1, 'contain'], [mbc2, 'contain'], [mbc3, 'contain']], year: '2023.04 - 2023.06', project: '물건너 온 아빠들' },
+  { name: 'METLIFE', photos: [[metlife1, 'contain'], metlife2, metlife3], year: '2024.04 - 2025.04', project: '메트라이프 L&D팀' },
+  { name: 'FELICITY', photos: [felicity1, [felicity2, 'contain'], felicity3], year: '2025.05 - 2026.02', project: '펠리시티 영상팀' },
+  { name: 'UX/UI', photos: [[uxui1, 'contain'], [uxui2, 'contain'], [uxui3, 'contain']], year: '2026.04 - 2026.10', project: ['AI 활용 UXUI디자인&웹기획', '프론트 엔드 부트캠프'].join('\n') },
 ]
 
 // the glass colour of each vial (THEATER, VIDEO, MBC, METLIFE, FELICITY, UX/UI): its halo takes this tint
@@ -531,12 +546,23 @@ function VialCarousel() {
                 >
                   <div
                     className="vc__box"
+                    data-empty={item.photos && !item.photos[i] ? '1' : undefined}
                     style={{ transform: b.rot ? `rotate(${b.rot}deg)` : undefined }}
                     onPointerDown={(e) => onBoxDown(e, i)}
                     onPointerMove={(e) => onBoxMove(e, i)}
                     onPointerUp={(e) => onBoxUp(e, i)}
                     onPointerCancel={(e) => onBoxUp(e, i)}
-                  />
+                  >
+                    {item.photos?.[i] && (
+                      <img
+                        className="vc__photo"
+                        src={[].concat(item.photos[i])[0]}
+                        data-fit={[].concat(item.photos[i])[1] || 'cover'}
+                        alt=""
+                        draggable="false"
+                      />
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

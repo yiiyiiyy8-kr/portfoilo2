@@ -16,17 +16,26 @@ const X_PATH =
 const TILT = -6.3 // degrees, from the Figma frame
 const EXIT_MS = 620
 
+// the message written on the paper (one string per paragraph)
+const COPY = [
+  '저는 좋은 디자인이 사용자를 오래 고민하게 만들지 않는다고 생각합니다. 작은 불편함도 그냥 지나치지 않고, 사용자가 어디에서 멈추고 무엇을 어려워하는지 세심하게 관찰하려고 합니다.',
+  '복잡한 문제는 이해하기 쉽게 정리하고, 필요한 정보는 자연스럽게 발견할 수 있도록 만드는 것이 제가 생각하는 디자인의 역할입니다. 화려함보다 분명한 이유가 있는 화면을, 단순히 보기 좋은 결과보다 사용자의 다음 행동까지 이어지는 경험을 만들고 싶습니다.',
+  '저는 익숙한 불편함에 질문을 던지고, 사용자의 망설임이 줄어드는 순간을 설계합니다. 작은 차이가 더 나은 경험을 만든다고 믿으며, 사용자의 일상에 오래 남는 UX/UI 디자이너가 되겠습니다.',
+]
+
 function frameSize() {
   const w = window.innerWidth
   const h = window.innerHeight
   const portrait = w / h < 0.85
   if (portrait) {
-    const p = Math.min(w * 0.86, h * 0.62)
-    return { p, ox: 0, oy: 0 }
+    const p = Math.min(w * 0.9, h * 0.7)
+    // narrow sheets get taller so the whole message fits
+    return { p, h: Math.min(p * 1.45, h * 0.88), ox: 0, oy: 0 }
   }
   const s = Math.min(w / 1440, h / 1024)
+  const p = PAPER * s
   // Figma: paper centre sits at (757, 476) in the 1440 x 1024 frame
-  return { p: PAPER * s, ox: (757 - 720) * s, oy: (476 - 512) * s }
+  return { p, h: p < 500 ? Math.min(p * 1.4, h * 0.88) : p, ox: (757 - 720) * s, oy: (476 - 512) * s }
 }
 
 function PaperOverlay({ onClose }) {
@@ -177,7 +186,7 @@ function PaperOverlay({ onClose }) {
     }
   }
 
-  const { p, ox, oy } = layout
+  const { p, h, ox, oy } = layout
 
   return createPortal(
     <div
@@ -196,12 +205,12 @@ function PaperOverlay({ onClose }) {
 
       <div
         className="paper-overlay__anchor"
-        style={{ width: p, height: p, marginLeft: -p / 2 + ox, marginTop: -p / 2 + oy }}
+        style={{ width: p, height: h, marginLeft: -p / 2 + ox, marginTop: -h / 2 + oy }}
       >
         <div
           className="paper"
           ref={paperRef}
-          style={{ width: p, height: p, background: PAPER_COLOR, transform: initialTransform.current }}
+          style={{ width: p, height: h, background: PAPER_COLOR, transform: initialTransform.current }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
@@ -214,13 +223,18 @@ function PaperOverlay({ onClose }) {
           >
             <path d={X_PATH} fill={X_COLOR} fillRule="evenodd" />
           </svg>
+          <div className="paper__copy">
+            {COPY.map((line) => (
+              <p key={line}>{line}</p>
+            ))}
+          </div>
           {/* keyboard / screen-reader close, sitting over the X */}
           <button
             type="button"
             className="paper__x"
             aria-label="닫기"
             onClick={requestClose}
-            style={{ left: `${(535.4 / PAPER) * 100}%`, top: `${(36.1 / PAPER) * 100}%` }}
+            style={{ left: `${(535.4 / PAPER) * 100}%`, top: `${(36.1 / PAPER) * p}px` }}
           />
         </div>
       </div>
